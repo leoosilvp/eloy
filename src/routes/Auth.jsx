@@ -24,7 +24,7 @@ const Auth = () => {
         setErro("");
         if (!email.trim() || !senha.trim()) return setErro("Preencha todos os campos.");
 
-        const {error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabase.auth.signInWithPassword({
             email,
             password: senha
         });
@@ -34,8 +34,15 @@ const Auth = () => {
             return setErro(error.message || "Email ou senha incorretos.");
         }
 
+        const token = data.session?.access_token;
+
+        if (token) {
+            localStorage.setItem("access_token", token);
+        }
+
         navigate("/feed");
     }
+
 
     async function handleCreateAccount() {
         setErro("");
