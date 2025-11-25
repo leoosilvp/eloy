@@ -1,154 +1,86 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import '../css/auth.css';
-import logo from '../assets/img/logo.png';
-import logoDark from '../assets/img/logo-dark.png';
+import { useState } from 'react'
+import '../css/auth.css'
+import logo from '../assets/img/logo.png'
+import logoDark from '../assets/img/logo-dark.png'
 import { useTheme } from "../hook/ThemeContext.jsx";
-import { supabase } from "../hook/supabaseClient.js";
 
 const Auth = () => {
+
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
-    const [nome, setNome] = useState("");
-    const [userName, setUserName] = useState("");
-    const [genero, setGenero] = useState("");
-    const [nascimento, setNascimento] = useState("");
     const [erro, setErro] = useState("");
     const [mostrarSenha, setMostrarSenha] = useState(false);
-    const [modoCadastrar, setModoCadastrar] = useState(false);
 
     const navigate = useNavigate();
-    const { theme } = useTheme();
+
+    const { theme} = useTheme();
 
     async function handleLogin() {
+
         setErro("");
-        if (!email.trim() || !senha.trim()) return setErro("Preencha todos os campos.");
 
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password: senha
-        });
-
-        if (error) {
-            console.error(error);
-            return setErro(error.message || "Email ou senha incorretos.");
-        }
-
-        const token = data.session?.access_token;
-
-        if (token) {
-            localStorage.setItem("access_token", token);
-        }
-
-        navigate("/feed");
-    }
-
-
-    async function handleCreateAccount() {
-        setErro("");
-        if (!email || !senha || !nome || !userName || !genero || !nascimento) {
+        if (!email.trim() || !senha.trim()) {
             return setErro("Preencha todos os campos.");
         }
 
         try {
-            const { data: signData, error: signError } = await supabase.auth.signUp({
-                email,
-                password: senha,
-                options: {
-                    emailRedirectTo: undefined,
-                    data: { full_name: nome },
-                    shouldCreateUser: true
-                }
+            const response = await fetch("/db/users.json");
+            const usersDB = await response.json();
 
-            });
+            const userFound = usersDB.find(u =>
+                u.email.toLowerCase() === email.toLowerCase() &&
+                u.senha === senha
+            );
 
-            if (signError) {
-                console.error(signError);
-                return setErro(signError.message || "Erro ao criar usuário.");
+            if (!userFound) {
+                return setErro("Email ou senha incorretos.");
             }
 
-            const userId = signData.user?.id;
-            if (!userId) return setErro("Erro: user id não retornado.");
+            const userFiltered = {
+                id: userFound.id,
+                nome: userFound.nome,
+                email: userFound.email
+            };
 
-            const { error: dbError } = await supabase
-                .from("profiles")
-                .insert([{
-                    id: userId,
-                    user_name: userName,
-                    nome,
-                    genero,
-                    aniversario: nascimento,
-                    created_at: new Date().toISOString()
-                }]);
+            localStorage.setItem("eloy_user", JSON.stringify(userFiltered));
 
-            if (dbError) {
-                console.error(dbError);
-                return setErro("Erro ao salvar dados do perfil: " + dbError.message);
-            }
+
 
             navigate("/feed");
 
-        } catch (err) {
-            console.error(err);
-            setErro("Erro inesperado ao criar conta.");
+
+        } catch (error) {
+            console.error(error);
+            setErro("Erro ao conectar com o servidor.");
         }
     }
 
     function handleKeyPress(e) {
-        if (e.key === "Enter") modoCadastrar ? handleCreateAccount() : handleLogin();
+        if (e.key === "Enter") {
+            handleLogin();
+        }
     }
 
     return (
         <section className='ctn-page-auth' onKeyDown={handleKeyPress}>
             <header className='header-page-auth'>
                 <Link to='/welcome'>
-                    <img src={theme === "light" ? logoDark : logo} alt="logo" />
+                    <img src={theme === "light" ? logoDark : logo} />
                 </Link>
             </header>
 
             <section className='content-auth'>
                 <article className='ctn-auth'>
-                    {modoCadastrar && (
-                        <>
-                            <section className='ctn-input-auth'>
-                                <label>Nome Completo</label>
-                                <section className='input-auth'>
-                                    <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
-                                </section>
-                            </section>
-
-                            <section className='ctn-input-auth'>
-                                <label>Nome de Usuário</label>
-                                <section className='input-auth'>
-                                    <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} />
-                                </section>
-                            </section>
-
-                            <section className='ctn-input-auth'>
-                                <label>Gênero</label>
-                                <section className='input-auth'>
-                                    <select value={genero} onChange={(e) => setGenero(e.target.value)}>
-                                        <option value="">Selecione</option>
-                                        <option value="Masculino">Masculino</option>
-                                        <option value="Feminino">Feminino</option>
-                                        <option value="Outro">Outro</option>
-                                    </select>
-                                </section>
-                            </section>
-
-                            <section className='ctn-input-auth'>
-                                <label>Data de Nascimento</label>
-                                <section className='input-auth'>
-                                    <input type="date" value={nascimento} onChange={(e) => setNascimento(e.target.value)} />
-                                </section>
-                            </section>
-                        </>
-                    )}
 
                     <section className='ctn-input-auth'>
                         <label>Email</label>
                         <section className='input-auth'>
-                            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
                             <button className='btn-right-input'><i className='fa-regular fa-envelope'></i></button>
                         </section>
                     </section>
@@ -156,8 +88,16 @@ const Auth = () => {
                     <section className='ctn-input-auth'>
                         <label>Senha <span>(6+ Caracteres)</span></label>
                         <section className='input-auth'>
-                            <input type={mostrarSenha ? "text" : "password"} value={senha} onChange={(e) => setSenha(e.target.value)} />
-                            <button className='btn-right-input' type="button" onClick={() => setMostrarSenha(!mostrarSenha)}>
+                            <input
+                                type={mostrarSenha ? "text" : "password"}
+                                value={senha}
+                                onChange={(e) => setSenha(e.target.value)}
+                            />
+                            <button
+                                className='btn-right-input'
+                                type="button"
+                                onClick={() => setMostrarSenha(!mostrarSenha)}
+                            >
                                 <i className={mostrarSenha ? 'fa-solid fa-lock-open' : 'fa-solid fa-lock'}></i>
                             </button>
                         </section>
@@ -165,13 +105,9 @@ const Auth = () => {
 
                     {erro && <p className="msg-erro">{erro}</p>}
 
-                    <p>Ao continuar, você declara estar de acordo com o <a href='#'>Acordo do Usuário</a> e a <a href='#'>Política de Privacidade</a>.</p>
+                    <p>Ao continuar para Login ou Criar Conta, você declara estar de acordo com o <a href='#'>Acordo do Usuário</a> e a <a href='#'>Política de Privacidade</a> do eloy.</p>
 
-                    {modoCadastrar ? (
-                        <button className='active' onClick={handleCreateAccount}>Criar conta</button>
-                    ) : (
-                        <button className='active' onClick={handleLogin}>Aceitar e continuar</button>
-                    )}
+                    <button className='active' onClick={handleLogin}>Aceitar e continuar</button>
 
                     <section className='line-auth'>
                         <div className='hr'></div>
@@ -179,17 +115,14 @@ const Auth = () => {
                         <div className='hr'></div>
                     </section>
 
-                    {!modoCadastrar && <button><i className='fa-brands fa-google'></i>Continuar com Google</button>}
+                    <button><i className='fa-brands fa-google'></i>Continuar com Google</button>
 
-                    {modoCadastrar ? (
-                        <h2>Já tem conta? <a onClick={() => setModoCadastrar(false)}>Entrar</a></h2>
-                    ) : (
-                        <h2>Novo no eloy? <a onClick={() => setModoCadastrar(true)}>Criar conta</a></h2>
-                    )}
+                    <h2>Novo no eloy? <a href="#">Criar conta</a></h2>
                 </article>
             </section>
-        </section>
-    );
-};
 
-export default Auth;
+        </section>
+    )
+}
+
+export default Auth

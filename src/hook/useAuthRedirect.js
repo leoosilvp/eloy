@@ -5,7 +5,7 @@ const useAuthRedirect = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const user = localStorage.getItem("access_token");
+    const user = localStorage.getItem("eloy_user");
 
     if (!user) {
       navigate("/auth", { replace: true });

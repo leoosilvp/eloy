@@ -1,15 +1,11 @@
 <div align='center'>
 
-<a href='https://eloy-ai.vercel.app/'>
+<a href='https://ai-eloy.vercel.app/'>
     <img src='./src/assets/img/logo.png' width='300px'>
 </a>
 </div>
 
-[eloy.com](https://eloy-ai.vercel.app/)
-
-| email | senha |
-| :--- | :--- |
-| teste@fiap.com.br | teste123 |
+[eloy.com](https://ai-eloy.vercel.app/)
 
 ## 🎯 Contexto e Proposta de Valor (Global Solution FIAP)
 
@@ -90,7 +86,7 @@ Para configurar e rodar o projeto em seu ambiente local, siga as instruções ab
 ### 1. Clonagem do Repositório
 
 bash
-git clone https://github.com/Gs-FIAP-eloy/Gs-Front-Web.git
+git clone https://github.com/leoosilvp/eloy.git
 cd Gs-Front-Web
 
 
@@ -116,6 +112,6 @@ Este projeto foi concebido e desenvolvido pelos seguintes membros da equipe:
 
 | Nome Completo | Registro Acadêmico (RM) | Função Principal |
 | :--- | :--- | :--- |
-| *Leonardo Silva* | RM 564929 | Desenvolvedor Frontend |
+| *Leonardo Silva* | RM 564929 | Desenvolvedor Full-Stack |
 | *Samuel Monteiro* | RM 564391 | Especialista em UX/UI |
 | *Lucas Toledo* | RM 563271 | Desenvolvedor Backend |
