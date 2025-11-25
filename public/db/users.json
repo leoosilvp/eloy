@@ -1,0 +1,1135 @@
+[
+    {
+        "id": "leeosilvp",
+        "nome": "Leonardo Silva",
+        "genero": "Masculino",
+        "foto": "https://avatars.githubusercontent.com/u/182553526?v=4",
+        "banner": "https://media.licdn.com/dms/image/v2/D4D16AQGjobWVHrk20Q/profile-displaybackgroundimage-shrink_350_1400/B4DZoj8pleGQAY-/0/1761539704579?e=1764806400&v=beta&t=_9z1jyaKKLFbWWhS4xIWs9RUAUcfJZVvN2EWClmaQbI",
+        "titulo": "Software Engineer | Back-end Developer | Python | JavaScript | React | Node.Js | MySQL | Agile Methodologies",
+        "cargo": "Engenheiro de Software",
+        "empresa": "FIAP",
+        "resumo": "Olá! Me chamo Leonardo, sou estudante de Engenharia de Software na FIAP, onde estou construindo uma trajetória voltada à criação de soluções digitais relevantes e escaláveis. Hoje, estou à frente do GrahamAI, um projeto que une IA generativa, interação em tempo real e design funcional para redefinir a forma como humanos e máquinas se comunicam. Acredito no poder da tecnologia como ferramenta de transformação e compartilho essa visão através do meu LinkedIn Leonardo Silva.",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Desenvolvimento",
+        "seguidores": [
+            {
+                "id": "smk_dmz"
+            },
+            {
+                "id": "alem4ao"
+            },
+            {
+                "id": "gui_araujo"
+            },
+            {
+                "id": "yanbreno"
+            }
+        ],
+        "seguindo": [
+            {
+                "id": "smk_dmz"
+            },
+            {
+                "id": "alem4ao"
+            }
+        ],
+        "estrelas": [],
+        "competencias": [
+            "Resolução de Problemas",
+            "Criatividade",
+            "Comunicação",
+            "Python"
+        ],
+        "experiencias": [
+            {
+                "empresa": "",
+                "tipo": "",
+                "cargo": "",
+                "inicio": "",
+                "fim": "",
+                "local": "",
+                "descricao": ""
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "Engenharia de Software",
+                "instituicao": "FIAP",
+                "ano": 2025
+            }
+        ],
+        "projetos": [
+            {
+                "titulo": "Graham AI",
+                "link": "https://graham-ai-page.vercel.app/",
+                "descricao": "Plataforma de IA open-source para interação contextual em tempo real, utilizando React (frontend) e Node.js (backend). Integra NLP avançado via DeepSeek AI, demonstrando proficiência em desenvolvimento full-stack e inovação na interação humanoIA."
+            },
+            {
+                "titulo": "CvHub",
+                "link": "https://cv-hub-jet.vercel.app/",
+                "descricao": "Gera currículos otimizados para ATS a partir de dados do GitHub. Utiliza integração de APIs e automação para criar perfis profissionais, conectando tecnologia e empregabilidade."
+            }
+        ],
+        "certificacoes": [
+            {
+                "curso": "Front-End",
+                "instituicao": "FIAP",
+                "duracao": "40 Horas"
+            },
+            {
+                "curso": "Python",
+                "instituicao": "FIAP",
+                "duracao": "80 Horas"
+            }
+        ],
+        "idiomas": [
+            {
+                "idioma": "Portugues",
+                "nivel": "Nativo"
+            },
+            {
+                "idioma": "Inglês",
+                "nivel": "Intermediario"
+            }
+        ],
+        "areainteresses": [
+            "IA",
+            "Desenvolvimento",
+            "Back-End",
+            "Front-End",
+            "Web",
+            "Security",
+            "Machine learning",
+            "Mobile",
+            "SQL",
+            "Blockchain"
+        ],
+        "email": "rm564929@fiap.com.br",
+        "senha": "leo1234",
+        "aniversario": "2007-02-06",
+        "posts": [
+            {
+                "id": 1,
+                "conteudo": "Primeiro post oficial no eloy! 🎊",
+                "dataTime": "2025-11-08T06:27:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            },
+            {
+                "id": 2,
+                "conteudo": "Obrigado @smk_dmz e @alem4ao pela ajuda! excelentes profissionais.",
+                "dataTime": "2025-11-19T12:45:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    },
+    {
+        "id": "smk_dmz",
+        "nome": "Samuel Monteiro",
+        "genero": "Masculino",
+        "foto": "https://media.licdn.com/dms/image/v2/D5603AQGODfaMD4tvQA/profile-displayphoto-shrink_400_400/B56ZcUfPFCGoAg-/0/1748395422545?e=1764806400&v=beta&t=zu-EKfnIxvW3CQDrqX8sB6amPheP5pUXdRVlh2SIvgo",
+        "banner": "https://i.pinimg.com/1200x/26/d1/c6/26d1c632231158001b72708eb8ec8687.jpg",
+        "titulo": "Software Engineer | Cybersecurity | IA | Machine Learning | DevOps | Big Data | Blockchain | Web3 | Python | Kubernetes | Terraform | Grafana",
+        "cargo": "Engenheiro de Software",
+        "empresa": "FIAP",
+        "resumo": "Sou Samuel, estudante de Engenharia de Software na FIAP e apaixonado por tecnologia de ponta. Me interesso especialmente por cibersegurança, inteligência artificial e infraestrutura escalável. Busco constantemente entender como sistemas complexos funcionam e como automatizá-los com segurança, performance e criatividade. Estou construindo minha trajetória explorando DevOps, nuvem, IA e segurança ofensiva/defensiva.",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Desenvolvimento",
+        "seguidores": [
+            {
+                "id": "leeosilvp"
+            },
+            {
+                "id": "alem4ao"
+            }
+        ],
+        "seguindo": [
+            {
+                "id": "alem4ao"
+            },
+            {
+                "id": "leeosilvp"
+            }
+        ],
+        "estrelas": [],
+        "competencias": [
+            "Cibersegurança",
+            "Python",
+            "Machine Learning",
+            "DevOps",
+            "Kubernetes",
+            "Terraform",
+            "Linux",
+            "Resolução de Problemas",
+            "Análise Lógica"
+        ],
+        "experiencias": [
+            {
+                "empresa": "FIAP Labs",
+                "tipo": "Iniciação Tecnológica",
+                "cargo": "Assistente de Desenvolvimento",
+                "inicio": "2024",
+                "fim": "2025",
+                "local": "São Paulo, Brasil",
+                "descricao": "Colaboração em projetos acadêmicos envolvendo automação de infraestrutura, análise de segurança e desenvolvimento de scripts Python. Participação em pesquisas práticas sobre modelos de IA aplicada e uso de ferramentas DevOps para melhorar processos internos."
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "Engenharia de Software",
+                "instituicao": "FIAP",
+                "ano": 2025
+            }
+        ],
+        "projetos": [
+            {
+                "titulo": "InfraGuard-Lite",
+                "link": "",
+                "descricao": "Protótipo acadêmico de um monitor de infraestrutura automatizado usando Python e Grafana, desenvolvido para estudos internos na FIAP. O objetivo era detectar comportamento anômalo em serviços simulados e treinar alertas."
+            }
+        ],
+        "certificacoes": [
+            {
+                "curso": "Cybersecurity Essentials",
+                "instituicao": "Cisco Networking Academy",
+                "duracao": "30 Horas"
+            },
+            {
+                "curso": "Linux Fundamentals",
+                "instituicao": "Udemy",
+                "duracao": "12 Horas"
+            }
+        ],
+        "idiomas": [
+            {
+                "idioma": "Português",
+                "nivel": "Nativo"
+            },
+            {
+                "idioma": "Inglês",
+                "nivel": "Intermediário"
+            }
+        ],
+        "areainteresses": [
+            "Cibersegurança",
+            "Machine Learning",
+            "DevOps",
+            "IA Generativa",
+            "Nuvem",
+            "Python",
+            "Redes",
+            "Blockchain",
+            "Análise de Dados"
+        ],
+        "email": "rm564391@fiap.com.br",
+        "senha": "290107fiap",
+        "aniversario": "2007-01-29",
+        "posts": [
+            {
+                "id": 3,
+                "conteudo": "Automatizar tudo com Terraform é lindo até o dia que seu pipeline quebra e ninguém sabe onde. Infra como código virou arma de dois gumes: poder à vista, caos nas sombras. Quem já sofreu esse blackout sabe do que falo. Cadê o manual do \"desespero controlado\"? #TerraformTerror #InfraRealTalk #CódigoÉResponsa",
+                "dataTime": "2025-11-17T14:20:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    },
+    {
+        "id": "alem4ao",
+        "nome": "Lucas Cortonezi",
+        "genero": "Masculino",
+        "foto": "https://avatars.githubusercontent.com/u/198768909?v=4",
+        "banner": "",
+        "titulo": "Estudante de Engenharia de Software na FIAP | React | Node | Tailwindcss | Phyton",
+        "cargo": "Engenheiro de Software",
+        "empresa": "FIAP",
+        "resumo": "Sou estudante de Engenharia da Computação na FIAP, atualmente no 2º semestre, procurando adquirir experiência profissional na área, e melhorar minhas habilidades. Tenho buscado complementar minha formação com cursos extracurriculares. Estou em busca de uma oportunidade de estágio para colocar meus conhecimentos em prática e contribuir com o time, preferencialmente no período da tarde ou noite. Me considero esforçado, interessado e com muita vontade de aprender.",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Desenvolvimento",
+        "seguidores": [
+            {
+                "id": "leeosilvp"
+            },
+            {
+                "id": "smk_dmz"
+            }
+        ],
+        "seguindo": [
+            {
+                "id": "leeosilvp"
+            },
+            {
+                "id": "smk_dmz"
+            }
+        ],
+        "estrelas": [],
+        "competencias": [
+            "todas"
+        ],
+        "experiencias": [
+            {
+                "empresa": "",
+                "tipo": "",
+                "cargo": "",
+                "inicio": "",
+                "fim": "",
+                "local": "",
+                "descricao": ""
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "Engenharia de Software",
+                "instituicao": "FIAP",
+                "ano": 2025
+            }
+        ],
+        "projetos": [
+            {
+                "titulo": "meu portifólio",
+                "link": "https://lucastoledo.vercel.app",
+                "descricao": "meu portifolio profissional com todos meus certificados e projetos"
+            }
+        ],
+        "certificacoes": [
+            {
+                "curso": "Deus das IA's",
+                "instituicao": "UniNoia",
+                "duracao": "1 minuto"
+            }
+        ],
+        "idiomas": [
+            {
+                "idioma": "Ingles",
+                "nivel": "Avançado"
+            }
+        ],
+        "areainteresses": [
+            "Agentes de AI",
+            "Desenvolvimento de Software",
+            "Inovação Tecnológica"
+        ],
+        "email": "rm563271@fiap.com.br",
+        "senha": "250607fiap",
+        "aniversario": "2007-06-25",
+        "posts": [
+            {
+                "id": 1,
+                "conteudo": "A inteligência artificial está transformando o cotidiano dos desenvolvedores, automatizando tarefas repetitivas, auxiliando na detecção de bugs e otimizando processos de desenvolvimento. Ferramentas baseadas em IA permitem que os devs foquem em soluções criativas e estratégicas, elevando a produtividade e a inovação. #IA #DesenvolvimentoDeSoftware #Inovação",
+                "dataTime": "2025-11-17T14:43:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            },
+            {
+                "id": 2,
+                "conteudo": "A gentes de ia estão revolucionando o desenvolvimento de software ao automatizar tarefas complexas, melhorar a eficiência e permitir soluções inovadoras. Com agentes de IA, desenvolvedores podem criar aplicações mais inteligentes e responsivas, elevando o padrão da indústria. #AgentesDeIA #DesenvolvimentoDeSoftware #InovaçãoTecnológica",
+                "dataTime": "2025-11-16T18:33:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            },
+            {
+                "id": 6,
+                "conteudo": "Agent Task, nova funcionalidade do ChatGPT, permite que agentes de IA executem tarefas complexas de forma autônoma, facilitando o desenvolvimento de software e aumentando a produtividade dos desenvolvedores. #AgentTask #ChatGPT #DesenvolvimentoDeSoftware",
+                "dataTime": "2025-11-11T07:56:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    },
+    {
+        "id": "gui_araujo",
+        "nome": "Guilherme de Araùjo",
+        "genero": "Masculino",
+        "foto": "https://media.licdn.com/dms/image/v2/D4E03AQFtkCAZ_d5qnA/profile-displayphoto-scale_400_400/B4EZee3LPLHwAk-/0/1750716955237?e=1764806400&v=beta&t=Glfjc2PoVHkAl3iQcsMUeYLEL4Rr0oAurFe4Z69k-OM",
+        "banner": "",
+        "titulo": "Software Engineer - FIAP | HTML | Tailwind CSS | JavaScript | Node.js | React | Python | C++ | SQL | Agile Methodologies",
+        "cargo": "Engenheiro de Software",
+        "empresa": "FIAP",
+        "resumo": "Estudante de Engenharia de Software com foco em desenvolvimento, inteligência artificial e games. Possuo sólida proficiência em matemática e habilidades em JavaScript, CSS, HTML, Python, C++, React e conhecimento básico em SQL, aplicadas em projetos acadêmicos e desenvolvidas através de um forte espírito de trabalho em equipe. Com uma experiência de 6 meses nos Estados Unidos onde aperfeiçoei meu inglês, estou em busca de oportunidades para aplicar meus conhecimentos, continuar aprendendo e contribuir com soluções inovadoras em tecnologia.",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Desenvolvimento",
+        "seguidores": [
+            {
+                "id": "yanbreno"
+            }
+        ],
+        "seguindo": [],
+        "estrelas": [],
+        "competencias": [],
+        "experiencias": [
+            {
+                "empresa": "",
+                "tipo": "",
+                "cargo": "",
+                "inicio": "",
+                "fim": "",
+                "local": "",
+                "descricao": ""
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "Engenharia de Software",
+                "instituicao": "FIAP",
+                "ano": 2025
+            }
+        ],
+        "projetos": [
+            {
+                "titulo": "",
+                "link": "",
+                "descricao": ""
+            }
+        ],
+        "certificacoes": [
+            {
+                "curso": "",
+                "instituicao": "",
+                "duracao": ""
+            }
+        ],
+        "idiomas": [
+            {
+                "idioma": "",
+                "nivel": ""
+            }
+        ],
+        "areainteresses": [],
+        "email": "rm561848@fiap.com.br",
+        "senha": "290905fiap",
+        "aniversario": "2005-09-29",
+        "posts": [
+            {
+                "id": 7,
+                "conteudo": "Você já tentou ensinar um algoritmo de IA a entender a complexidade do código humano? Spoiler: inteligência artificial ainda engatinha diante da nossa criatividade caótica. E aí, IA vai substituir dev ou ser só uma ajudante frustrada? #EngenhariaComAlma #IAnaPrática #CodarÉHumano",
+                "dataTime": "2025-11-17T13:13:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    },
+    {
+        "id": "yanbreno",
+        "nome": "Yan Barutti",
+        "genero": "Masculino",
+        "foto": "https://media.licdn.com/dms/image/v2/D4E03AQE3kGCzSZwfcQ/profile-displayphoto-scale_400_400/B4EZjKxWTiHEAg-/0/1755748591501?e=1764806400&v=beta&t=1uI9zwyEonl3CHLMG_mtY66yY-F2fjae3KfpUdga1Qo",
+        "banner": "",
+        "titulo": "Estudante de Engenharia de Software - FIAP | HTML | CSS | JS | Python",
+        "cargo": "Engenheiro de Software",
+        "empresa": "FIAP",
+        "resumo": "",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Desenvolvimento",
+        "seguidores": [
+            {
+                "id": "alem4ao"
+            },
+            {
+                "id": "gui_araujo"
+            }
+        ],
+        "seguindo": [
+            {
+                "id": "leeosilvp"
+            }
+        ],
+        "estrelas": [],
+        "competencias": [],
+        "experiencias": [
+            {
+                "empresa": "",
+                "tipo": "",
+                "cargo": "",
+                "inicio": "",
+                "fim": "",
+                "local": "",
+                "descricao": ""
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "Engenharia de Software",
+                "instituicao": "FIAP",
+                "ano": 2025
+            }
+        ],
+        "projetos": [
+            {
+                "titulo": "",
+                "link": "",
+                "descricao": ""
+            }
+        ],
+        "certificacoes": [
+            {
+                "curso": "",
+                "instituicao": "",
+                "duracao": ""
+            }
+        ],
+        "idiomas": [
+            {
+                "idioma": "",
+                "nivel": ""
+            }
+        ],
+        "areainteresses": [],
+        "email": "rm566412@fiap.com.br",
+        "senha": "280906fiap",
+        "aniversario": "2006-09-28",
+        "posts": [
+            {
+                "id": 8,
+                "conteudo": "Aprender JavaScript não é só dominar sintaxe, é enfrentar a mess de paradigmas e frameworks que mudam a cada café. Quem disse que é simples vive na superfície. A profundidade exige coragem e resistência. Quem topa esse desafio de verdade? #DevSemFiltro #JSRealTalk #CodeComAlma",
+                "dataTime": "2025-11-14T01:47:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            },
+            {
+                "id": 9,
+                "conteudo": "Aprendi que dominar Python não é só saber sintaxe, é entender que eficiência não sobrevive sem clareza. Por que tanta pressa em otimizar código se o verdadeiro bug é perder a legibilidade? Devs, vamos debater: código bonito importa mais que código rápido? #CodeComAlma #PythonReflexão #EngenhariaDeSoftwareReal",
+                "dataTime": "2025-11-17T17:50:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    },
+    {
+        "id": "jessica_schlickmann",
+        "nome": "Jessica Schlickmann",
+        "genero": "Masculino",
+        "foto": "https://randomuser.me/api/portraits/women/2.jpg",
+        "banner": "",
+        "titulo": "Cálculo | Estatística | Matemática Financeira | Doutora em Educação | Experiência em Ensino Superior na área de Tecnologia",
+        "cargo": "Professor",
+        "empresa": "FIAP",
+        "resumo": "Doutora em Educação Científica e Tecnológica com sólida atuação no Ensino Superior em cursos de Engenharia de Software e Análise e Desenvolvimento de Sistemas. Licenciada em Matemática, com especialização em Matemática Financeira e Mestrado em Educação, desenvolvo práticas pedagógicas inovadoras, integrando matemática aplicada, estatística, tecnologia e machine learning. Leciono disciplinas como Cálculo, Estatística Descritiva e Inferencial, Matemática Financeira e Fundamentos de Matemática, com foco em aprendizagem ativa, resolução de problemas reais e desenvolvimento de competências alinhadas à Indústria 4.0. Tenho expertise em metodologias ativas, ensino por projetos, educação híbrida e uso de Python, Excel e Google Colab no ensino de conteúdos matemáticos. Atuo também na produção de materiais didáticos, planejamento de avaliações e orientação de projetos integradores. Busco colaborar com instituições de ensino superior comprometidas com inovação, qualidade acadêmica e formação crítica de profissionais da área de tecnologia e engenharia.",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Educação",
+        "seguidores": 0,
+        "seguindo": 0,
+        "competencias": [
+            "Liderança",
+            "Cálculo",
+            "Educação",
+            "Estatística",
+            "Metodologias Ágeis"
+        ],
+        "experiencias": [
+            {
+                "empresa": "FIAP",
+                "tipo": "Meio Periodo",
+                "cargo": "Professor",
+                "inicio": "Ago de 2024",
+                "fim": "Atual",
+                "local": "São Paulo, SP",
+                "descricao": "Planejamento e execução de aulas nas áreas de cálculo diferencial, integral e limites, voltadas a estudantes de Engenharia de Software. Aplicação de metodologias ativas (como aprendizagem baseada em problemas e projetos), com uso de Python e Google Colab para resolução de problemas reais. Integração entre conteúdos matemáticos e suas aplicações em TI, como otimização de algoritmos, análise de dados e modelagem de soluções computacionais. Produção de materiais didáticos e construção de avaliações contextualizadas que incentivam o pensamento crítico e a resolução de problemas complexos. Orientação de projetos de aplicação prática em matemática, com foco na indústria 4.0 e engenharia de software."
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "Doutorado em Educação Científica",
+                "instituicao": "UFSC",
+                "ano": 2018
+            }
+        ],
+        "projetos": [],
+        "certificacoes": [],
+        "idiomas": [
+            {
+                "idioma": "Português",
+                "nivel": "Nativo"
+            },
+            {
+                "idioma": "Inglês",
+                "nivel": "Avançado"
+            }
+        ],
+        "areainteresses": [
+            "Acadêmico",
+            "Matemática",
+            "Cálculo",
+            "Educação",
+            "Gestão",
+            "Estatística"
+        ],
+        "email": "pf2151@fiap.com.br",
+        "senha": "jessica123",
+        "aniversario": "0000-00-00",
+        "estrelas": 0,
+        "posts": [
+            {
+                "id": 1,
+                "conteudo": "Cálculo não é um conjunto de passos para decorar — é uma linguagem para compreender mudanças, fenômenos e sistemas complexos. O problema é que muita gente ainda trata matemática como um ritual mecânico. Na Educação Científica, o desafio é transformar abstração em insight, e fórmula em ferramenta. Quem ensina sabe: quando o aluno entende o porquê, o como flui. #CálculoComSentido #EducaçãoCientífica #MatemáticaViva",
+                "dataTime": "2025-11-10T07:28:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            },
+            {
+                "id": 2,
+                "conteudo": "A matemática não assusta. O que assusta é a maneira como ela ainda é apresentada. Aulas expositivas, foco em resposta pronta e pouca investigação só afastam curiosidade. Na pesquisa em Educação Científica, isso é claro: estudantes aprendem mais quando exploram, testam, questionam. O problema não está no Cálculo — está em como ensinamos Cálculo. Precisamos de menos decoreba e mais descoberta. #EnsinoDeMatemática #EducaçãoComPesquisa #CálculoParaTodos",
+                "dataTime": "2025-11-16T14:59:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    },
+    {
+        "id": "lucas_augusto",
+        "nome": "Lucas Augusto",
+        "genero": "Masculino",
+        "foto": "https://media.licdn.com/dms/image/v2/C4D03AQHfpFqmuGEVNw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1517041934445?e=1765411200&v=beta&t=yC7iNhZKyL9kIOCU4IvX3qQzI-PNbJzVkulEZnstJX4",
+        "banner": "",
+        "titulo": "Doutorando em Energia | Professor Universitário | Desenvolvedor de Sistemas Embarcados",
+        "cargo": "Professor",
+        "empresa": "FIAP",
+        "resumo": "Doutorando em energia desenvolvendo pesquisa relacionada a eletrônica de potência, sistemas de controle e sistemas embarcados aplicados a geração de energia solar. Experiência como engenheiro eletrônico desenvolvendo soluções embarcadas (firmware e hardware) para instrumentos, equipamentos para automação comercial/industrial e dispositivos para telecomunicações e como professor universitário.",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Educação",
+        "seguidores": 0,
+        "seguindo": 0,
+        "competencias": [
+            "PCB",
+            "Prototipagem",
+            "Matlab",
+            "Engenharia",
+            "IOT",
+            "DevOps"
+        ],
+        "experiencias": [
+            {
+                "empresa": "FIAP",
+                "tipo": "Meio Periodo",
+                "cargo": "Professor",
+                "inicio": "Fev de 2023",
+                "fim": "Atual",
+                "local": "São Paulo, SP",
+                "descricao": "Professor da disciplina \"Edge Computing & Computer Systems\" no curso de Engenharia de Software, com foco no ensino de microcontroladores e Internet das Coisas (IoT), utilizando ferramentas e tecnologias, como Linux, Docker, FIWARE, Node-RED, broker Eclipse-Mosquitto, AWS e Azure, aplicando uma abordagem baseada em DevOps. Além disso, integrando plataformas de hardware como Arduino e ESP32 para promover o desenvolvimento de sistemas embarcados e soluções práticas de IoT, alinhando teoria e prática para resolver desafios reais do mercado."
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "Doutorando, Energia",
+                "instituicao": "Universidade Federal do ABC - UFABC",
+                "ano": 2022
+            }
+        ],
+        "projetos": [],
+        "certificacoes": [],
+        "idiomas": [
+            {
+                "idioma": "Português",
+                "nivel": "Nativo"
+            },
+            {
+                "idioma": "Inglês",
+                "nivel": "Avançado"
+            }
+        ],
+        "areainteresses": [
+            "IOT",
+            "Banco de dados",
+            "Servidor",
+            "DevOps",
+            "Inovação",
+            "Ciência",
+            "Educação"
+        ],
+        "email": "pf1739@fiap.com.br",
+        "senha": "lucas123",
+        "aniversario": "0000-00-00",
+        "estrelas": 0,
+        "posts": [
+            {
+                "id": 1,
+                "conteudo": "IoT virou moda, mas pouca gente fala do real gargalo: energia. Sensor bonito não sustenta rede — o que sustenta é eficiência energética, protocolo leve e arquitetura pensada pra operar anos, não horas. Quem trabalha com IoT de verdade sabe: otimizar consumo é tão importante quanto coletar dados. É pesquisa, é engenharia e é visão. #IoTEficiente #EnergiaÉBase #EngenhariaDoFuturo",
+                "dataTime": "2025-11-17T09:48:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            },
+            {
+                "id": 2,
+                "conteudo": "Smart Grid não é tendência — é necessidade. Com IoT distribuído, baterias avançadas e monitoramento em tempo real, o setor elétrico pode ser mais resiliente, sustentável e previsível. Mas ainda tem empresa tratando modernização energética como luxo. Quem pesquisa energia sabe: integrar IoT ao sistema elétrico é o passo que separa colapso de eficiência. #SmartGridNow #IoTNaEnergia #PesquisaQueTransforma",
+                "dataTime": "2025-11-11T10:18:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    },
+    {
+        "id": "w_cidade",
+        "nome": "Wellington Cidade",
+        "genero": "Masculino",
+        "foto": "https://media.licdn.com/dms/image/v2/C4D03AQG9LkDRJH6UDA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1565313254734?e=1765411200&v=beta&t=r8FZg6rtITNjy9vG0U6Rtow30PQdl6gXesIv0Imbslg",
+        "banner": "",
+        "titulo": "Full Stack || Teacher and Coordinator of Courses in Systems Development Technologies and Digital Games || Scrum Master",
+        "cargo": "Professor",
+        "empresa": "FIAP",
+        "resumo": "I have been working for 20 years with professional education, developing several programming languages, systems analysis, database modeling, wireframing of desktop, web and mobile systems and digital. Tools used: # HTM, # CSS, # JAVASCRIPT, #.NET, # JAVA, # REACT, # ANGULAR, # VUE, # GIT e GITHUB, # BANCO DE DADOS",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Educação",
+        "seguidores": 0,
+        "seguindo": 0,
+        "competencias": [
+            "Educação",
+            "Front-End",
+            "CSS",
+            "HTML",
+            "JavaScript",
+            "Banco de dados",
+            "Gestão de Projetos"
+        ],
+        "experiencias": [
+            {
+                "empresa": "FIAP",
+                "tipo": "Meio Periodo",
+                "cargo": "Professor de Engenharia de Software",
+                "inicio": "Fev de 2023",
+                "fim": "Atual",
+                "local": "São Paulo, SP",
+                "descricao": "Professor dos cursos de Graduação de Engenharia de Software e Análise e Desenvolvimento de Sistemas."
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "Mestrado em Desenvolvimento de Software",
+                "instituicao": "FUNIBER",
+                "ano": 2022
+            }
+        ],
+        "projetos": [],
+        "certificacoes": [],
+        "idiomas": [
+            {
+                "idioma": "Português",
+                "nivel": "Nativo"
+            },
+            {
+                "idioma": "Inglês",
+                "nivel": "Avançado"
+            }
+        ],
+        "areainteresses": [
+            "Segurança",
+            "Tecnologia",
+            "Infraestrutura"
+        ],
+        "email": "pf1734@fiap.com.br",
+        "senha": "cidade123",
+        "aniversario": "0000-00-00",
+        "estrelas": 0,
+        "posts": [
+            {
+                "id": 1,
+                "conteudo": "O front-end evoluiu para um nível absurdo: componentes inteligentes, bundlers otimizados, edge rendering… mas tem dev preso em tutorial de 2018 achando que JSX é o ápice da inovação. Hoje, escrever interface é engenharia — é lidar com estado complexo, acessibilidade séria e segurança em cada input. Quem ainda trata front-end como ‘parte visual’ está ficando para trás. #FrontEndRaiz #EngenhariaDeInterface #ModernoOuNada",
+                "dataTime": "2025-11-11T04:36:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    },
+    {
+        "id": "lucas_sousa",
+        "nome": "Lucas Sousa",
+        "genero": "Masculino",
+        "foto": "",
+        "banner": "",
+        "titulo": "Professor na FIAP | CSS | Tailwind | JavaScript | React.js | Coordenador Pedagógico",
+        "cargo": "Professor",
+        "empresa": "FIAP",
+        "resumo": "Com uma formação acadêmica diversificada sempre busquei ter uma base sólida em educação e tecnologia. Meu objetivo de carreira é claro: crescer profissionalmente e me desenvolver como líder na área de educação TI. Atuo como Coordenador Pedagógico e Professor Universitário, HTML, CSS, PHP, JavaScript, React.js, Sass. Minhas formações complementares em EAD, TIC's e práticas pedagógicas demonstram o que sempre busquei: comprometimento em estar sempre atualizado e oferecer o melhor ensino possível aos alunos. Com essas habilidades e conhecimentos, busco ter um futuro promissor na área de educação e tecnologia.",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Educação",
+        "seguidores": 0,
+        "seguindo": 0,
+        "competencias": [
+            "Liderança",
+            "Dev Web",
+            "React",
+            "Next.js",
+            "Tailwindcss",
+            "Segurança Cibernética",
+            "UX/UI",
+            "Cloud Computing"
+        ],
+        "experiencias": [
+            {
+                "empresa": "FIAP",
+                "tipo": "Meio Periodo",
+                "cargo": "Professor",
+                "inicio": "Fev de 2024",
+                "fim": "Atual",
+                "local": "São Paulo, SP",
+                "descricao": "Professor de Desenvolvimento Front-End Web, JavaScript."
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "MBA, Engenharia de Software",
+                "instituicao": "MBA USP/Esalq",
+                "ano": 2024
+            },
+            {
+                "curso": "Análise e Desenvolvimento de Programas",
+                "instituicao": "Descomplica",
+                "ano": 2022
+            }
+        ],
+        "projetos": [],
+        "certificacoes": [],
+        "idiomas": [
+            {
+                "idioma": "Português",
+                "nivel": "Nativo"
+            },
+            {
+                "idioma": "Inglês",
+                "nivel": "Avançado"
+            }
+        ],
+        "areainteresses": [
+            "Dados",
+            "Web Dev",
+            "Educação",
+            "Cibersegurança",
+            "Inovação",
+            "Tecnologia",
+            "Marketing"
+        ],
+        "email": "pf2036@fiap.com.br",
+        "senha": "lucas123",
+        "aniversario": "0000-00-00",
+        "estrelas": 0,
+        "posts": [
+            {
+                "id": 1,
+                "conteudo": "Todo mundo ama falar de performance em React, mas poucos encaram o verdadeiro vilão: segurança no front. Tem dev empolgado com Server Components e esquecendo que um XSS bem colocado derruba qualquer hype. A real é simples: não existe UI bonita que sobreviva a payload mal sanitizado. Bora elevar o nível e tratar segurança como feature obrigatória. #ReactHardMode #WebSecFirst #DevDeVerdade",
+                "dataTime": "2025-11-10T05:35:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            },
+            {
+                "id": 2,
+                "conteudo": "Next.js virou o queridinho da galera — tudo SSR, tudo rápido, tudo perfeito… até alguém deixar um endpoint público e expor dados sensíveis. Framework moderno não corrige descuido antigo. Quem constrói web hoje precisa pensar como engenheiro e como auditor. Next não é só rota automática: é arquitetura segura. #NextSemFiltro #ArquiteturaWeb #SecurityDrivenDev",
+                "dataTime": "2025-11-09T08:22:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    },
+    {
+        "id": "danilo_elias",
+        "nome": "Danilo R. de Assis Elias",
+        "genero": "Masculino",
+        "foto": "https://media.licdn.com/dms/image/v2/D4D03AQEEMwyMbbk_Lw/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1723914791734?e=1765411200&v=beta&t=K9EhLXjd6D0jIjJLvFXb78hugXUyFdREiljY2CKvvIQ",
+        "banner": "",
+        "titulo": "Campaign Lead @Invisible | Professor @FIAP | Python | Statistics | Physics | Phase Transitions",
+        "cargo": "Professor",
+        "empresa": "FIAP",
+        "resumo": "Hybrid technical–business Solutions Engineer with end-to-end ownership of data, automation, and workflow systems supporting high-volume enterprise operations. Designs, builds, and maintains scalable ETL pipelines, custom integrations, and dashboards used by leadership and teams across multiple campaigns and languages. Combines advanced scripting (Python, JS/Apps Script), SQL, and automation with strong analytical and communication skills to solve operational bottlenecks, deliver actionable insights, and ensure reliability at scale. Known for proactive problem solving, rapid implementation, and bridging engineering with business needs.",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Educação",
+        "seguidores": 0,
+        "seguindo": 0,
+        "competencias": [
+            "Análise de Dados",
+            "Python",
+            "Gestão de Projetos",
+            "Liderança",
+            "Comunicação"
+        ],
+        "experiencias": [
+            {
+                "empresa": "Invisible Technologies",
+                "tipo": "Tempo Integral",
+                "cargo": "Campaign Lead",
+                "inicio": "Jun de 2025",
+                "fim": "Atual",
+                "local": "São Paulo, SP",
+                "descricao": "Hybrid technical–business Solutions Engineer with end-to-end ownership of data, automation, and workflow systems supporting high-volume enterprise operations. Designs, builds, and maintains scalable ETL pipelines, custom integrations, and dashboards used by leadership and teams across multiple campaigns and languages. Combines advanced scripting (Python, JS/Apps Script), SQL, and automation with strong analytical and communication skills to solve operational bottlenecks, deliver actionable insights, and ensure reliability at scale. Known for proactive problem solving, rapid implementation, and bridging engineering with business needs."
+            },
+            {
+                "empresa": "FIAP",
+                "tipo": "Meio Periodo",
+                "cargo": "Professor",
+                "inicio": "Jul de 2022",
+                "fim": "Atual",
+                "local": "São Paulo, SP",
+                "descricao": "Professor of AI/NLP/ML, Data Science and Programming"
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "Doctor of philosophy",
+                "instituicao": "Universidade Estadual de Campinas",
+                "ano": 2023
+            },
+            {
+                "curso": "Mestrado em física aplicada",
+                "instituicao": "Universidade Estadual de Campinas",
+                "ano": 2019
+            }
+        ],
+        "projetos": [],
+        "certificacoes": [],
+        "idiomas": [
+            {
+                "idioma": "Português",
+                "nivel": "Nativo"
+            },
+            {
+                "idioma": "Inglês",
+                "nivel": "Avançado"
+            }
+        ],
+        "areainteresses": [
+            "Acadêmico",
+            "Administrativo",
+            "IA Generativa",
+            "Machine Learning",
+            "Engenharia",
+            "Física",
+            "Python",
+            "Dados"
+        ],
+        "email": "pf1670@fiap.com.br",
+        "senha": "danilo123",
+        "aniversario": "0000-00-00",
+        "estrelas": 0,
+        "posts": [
+            {
+                "id": 1,
+                "conteudo": "Python é incrível para segurança, mas ouvir que “automatizar tudo resolve” me faz querer gritar. Sem análise crítica e contexto, é código no escuro. Segurança não é só script, é entender o porquê, o risco real. Quem mais sente essa cilada? #SegurançaComAlma #PythonRealTalk #DadosNãoMentem",
+                "dataTime": "2025-11-17T17:34:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            },
+            {
+                "id": 2,
+                "conteudo": "Python na Segurança: não é só código, é meu escudo diário. Se você acha que segurança é firewall e antivirus, tá na hora de repensar. Inovação exige coragem para quebrar paradigmas. Quem topa esse desafio comigo? #SegurançaSemFrescura #PythonNaVeia #InovaçãoQueTransforma",
+                "dataTime": "2025-11-16T03:30:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    },
+    {
+        "id": "leandrosq",
+        "nome": "Leandro Queiroz",
+        "genero": "Masculino",
+        "foto": "https://media.licdn.com/dms/image/v2/C4D03AQGn62tZ4mahIg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1567121482931?e=1765411200&v=beta&t=nRxXpNEqsOyfZ65VFg3tKNamkSkYMhk1gXP4_50JKlY",
+        "banner": "",
+        "titulo": "Empreendedorismo + Inovação + Empreendedorismo Corporativo + Programa de Aceleração + Mentoria + Professor + Paletrante",
+        "cargo": "Professor",
+        "empresa": "FIAP",
+        "resumo": "Profissional com experiência na área de Infraestrutura e atuação como Analista de Business Intelligence na FIAP. Foco em Python e inovação.",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Educação",
+        "seguidores": 0,
+        "seguindo": 0,
+        "competencias": [
+            "Business Planning",
+            "Strategic Planning",
+            "Start-ups",
+            "Contabilidade",
+            "Consultoria de gestão",
+            "Gestão",
+            "Mentoria",
+            "Comunicação"
+        ],
+        "experiencias": [
+            {
+                "empresa": "UNIMED do Brasil",
+                "tipo": "Tempo Integral",
+                "cargo": "Inovação e Investimento em Startups",
+                "inicio": "Set de 2025",
+                "fim": "Atual",
+                "local": "São Paulo, SP",
+                "descricao": ""
+            },
+            {
+                "empresa": "FIAP",
+                "tipo": "Meio Periodo",
+                "cargo": "Professr em Innovation and Entrepreneurship",
+                "inicio": "Fev de 2023",
+                "fim": "Atual",
+                "local": "São Paulo, SP",
+                "descricao": "Professr em Innovation and Entrepreneurship na graduação no curso de Engenharja de Software."
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "Mestrado Profissional em Empreendedorismo, Administração e Negócios",
+                "instituicao": "feaUSP",
+                "ano": 2020
+            }
+        ],
+        "projetos": [],
+        "certificacoes": [],
+        "idiomas": [
+            {
+                "idioma": "Português",
+                "nivel": "Nativo"
+            },
+            {
+                "idioma": "Inglês",
+                "nivel": "Avançado"
+            }
+        ],
+        "areainteresses": [
+            "Educação",
+            "Gestão",
+            "Mentoria",
+            "Start-ups",
+            "Negociação",
+            "Inovação de produtos",
+            "Liderança",
+            "Empreendedorismo"
+        ],
+        "email": "pf1738@fiap.com.br",
+        "senha": "leandro123",
+        "aniversario": "0000-00-00",
+        "estrelas": 0,
+        "posts": [
+            {
+                "id": 1,
+                "conteudo": "Inovação não é velocidade — é alinhamento. Vejo em mentorias e acelerações que muita ideia boa desaba por falta de base, e muita empresa grande trava por medo de mudar. O ponto de virada nasce quando estratégia, pessoas e tecnologia caminham juntas.",
+                "dataTime": "2025-11-14T09:55:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    },
+    {
+        "id": "aurelio_vitorino",
+        "nome": "Aurélio Vitorino",
+        "genero": "Masculino",
+        "foto": "https://media.licdn.com/dms/image/v2/C4D03AQHshxyO5BHiDw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1517438875092?e=1765411200&v=beta&t=C8ayHTSlGsCq2qtZj4Y9st5FsKnu-Y0zUofDC9K-qMg",
+        "banner": "",
+        "titulo": "MSc, PhD, Pós-doutorando(UNIFESP)| Gestão de TI| Tecnologia da Informação em Saúde| Gestão de Projetos| Governança em TI| Inovação| Engenharia de SW| Professor (graduação e Pós-graduação)",
+        "cargo": "Professor",
+        "empresa": "FIAP",
+        "resumo": "",
+        "estado": "São Paulo",
+        "pais": "Brasil",
+        "area": "Educação, tecnologia",
+        "seguidores": 0,
+        "seguindo": 0,
+        "estrelas": 0,
+        "competencias": [
+            "Planejamento Didático",
+            "Atualização Permanente",
+            "Pensamento Crítico",
+            "Educação",
+            "Inteligência Emocional",
+            "Orientação Acadêmica",
+            "24 horas",
+            "Ambiente colaborativo",
+            "Postura Ética",
+            "Gestão de projetos",
+            "Didática e Metodologias Ativas"
+        ],
+        "experiencias": [
+            {
+                "empresa": "FIAP",
+                "tipo": "CLT",
+                "cargo": "Professor",
+                "inicio": "Jul de 2009",
+                "fim": "Atual",
+                "local": "São Paulo, SP",
+                "descricao": "Professor responsável por ministrar disciplinas de tecnologia, aplicar metodologias ativas e orientar projetos alinhados ao modelo inovador da FIAP."
+            },
+            {
+                "empresa": "Centro Universitário São Camilo",
+                "tipo": "CLT",
+                "cargo": "Professor Pós Graduação",
+                "inicio": "Jan de 2009",
+                "fim": "Atual",
+                "local": "São Paulo, SP",
+                "descricao": "Professor de pós-graduação responsável por ministrar aulas e orientar projetos acadêmicos nos programas da Universidade São Camilo."
+            },
+            {
+                "empresa": "Faculdade de Medicina da USP",
+                "tipo": "Tempo Integral",
+                "cargo": "Cordenador Técnico de TI",
+                "inicio": "Abr de 2015",
+                "fim": "Nov de 2024",
+                "local": "São Paulo, SP",
+                "descricao": "Responsável pela coordenação técnica de TI, infraestrutura e suporte institucional na Faculdade de Medicina da USP."
+            }
+        ],
+        "formacao": [
+            {
+                "curso": "Doutorado, Ciências",
+                "instituicao": "Faculdade de Medicina da USP",
+                "ano": 2020
+            },
+            {
+                "curso": "Pós-Doutorado",
+                "instituicao": "UNIFESP",
+                "ano": 2024
+            }
+        ],
+        "projetos": [],
+        "certificacoes": [],
+        "idiomas": [
+            {
+                "idioma": "Português",
+                "nivel": "Nativo"
+            },
+            {
+                "idioma": "Inglês",
+                "nivel": "Avançado"
+            }
+        ],
+        "areainteresses": [
+            "Educação",
+            "Tecnologia",
+            "Empreendedorismo"
+        ],
+        "email": "pf0527@fiap.com.br",
+        "senha": "aurelio123",
+        "aniversario": "0000-00-00",
+        "posts": [
+            {
+                "id": 1,
+                "conteudo": "Software Design na era da Sociedade 5.0 não é só sobre telas bonitas — é sobre criar sistemas que entendem pessoas. Tecnologia que prevê, ajuda e conecta, sem esquecer ética e responsabilidade. O desafio não é escrever código, é escrever futuro. Projetar software hoje é decidir como humanos e máquinas vão conviver amanhã. #Sociedade50 #SoftwareDesign #TechHumanizada",
+                "dataTime": "2025-11-19T13:00:00Z",
+                "likes": [],
+                "comentarios": [],
+                "compartilhamentos": []
+            }
+        ]
+    }
+]

@@ -1,0 +1,236 @@
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    gap: 130px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--background-card);
+    transition: all 0.3s ease;
+    z-index: 20;
+}
+
+.main-header.hidden {
+    transform: translateY(-110%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ctn-left-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo img {
+    display: flex;
+    width: 30px;
+}
+
+.repute {
+    display: flex;
+    gap: 5px;
+    cursor: default;
+}
+
+.repute p {
+    display: flex;
+    width: fit-content;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--gray-color);
+    border-radius: 4px;
+    gap: 5px;
+}
+
+.repute .position{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    background: var(--hover);
+    cursor: pointer;
+} 
+
+.btn-to-search {
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    justify-content: center;
+    background: transparent;
+    border: 1.3px solid var(--border-color);
+    border-radius: 5px;
+    gap: 15px;
+    cursor: text;
+}
+
+.btn-to-search i {
+    font-size: 1rem;
+    color: var(--gray-color);
+}
+
+.btn-to-search h1 {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--gray-color);
+    gap: 6px;
+}
+
+.btn-to-search h1 span {
+    padding: 3px 6px;
+    border-radius: 4px;
+    background: var(--hover);
+    font-size: 0.8rem;
+    color: var(--gray-color);
+}
+
+nav ul {
+    display: flex;
+    gap: 4px;
+}
+
+nav ul li a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+    padding: 20px 10px 10px 10px;
+    font-size: 0.75rem;
+    gap: 5px;
+    color: var(--muted-color);
+    transition: var(--transition-2s);
+    border-bottom: 2px solid transparent;
+}
+
+nav ul li a i {
+    font-size: 1.1rem;
+}
+
+nav ul li a:hover {
+    color: var(--light-color);
+}
+
+nav ul li .active {
+    color: var(--light-color);
+    border-color: var(--primary-color);
+}
+
+.on-notification{
+    margin-top: -55px;
+    margin-right: -23px;
+    display: flex;
+    width: 10px;
+    height: 10px;
+    background: red;
+    border-radius: 50%;
+}
+
+.on-message{
+    top: 15px;
+    right: 355px;
+    position: absolute;
+    display: none;
+    width: 10px;
+    height: 10px;
+    background: red;
+    border-radius: 50%;
+}
+
+.modal-profile{
+    position: fixed;
+    top: 65px;
+    margin-right: -970px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border);
+    background: var(--background-card);
+    width: 220px;
+    height: fit-content;
+    box-shadow: 0px 0px 10px 0px var(--shadow);
+    overflow: hidden;
+}
+
+.ctn-content-modal-profile{
+    display: flex;
+    flex-direction: column;
+    color: var(--light-color);
+}
+
+.ctn-content-modal-profile img{
+    display: flex;
+    width: 100%;
+}
+
+.content-modal-profile{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.img-user-modal{
+    margin-top: -35px;
+}
+
+.img-user-modal img{
+    display: flex;
+    width: 60px;
+    border-radius: 50%;
+    border: 3px solid var(--background-card);
+}
+
+.content-modal-profile h1{
+    margin-top: 4px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.content-modal-profile h2{
+    font-size: 0.7rem;
+    font-weight: 300;
+    color: var(--muted-color);
+}
+
+.content-modal-profile p{
+    margin-top: 7px;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--light-color);
+}
+
+.modal-profile hr{
+    margin: 5px auto;
+    width: 90%;
+    border: 1px solid var(--border-color);
+}
+
+.btns-modal-profile{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 3px;
+}
+
+.btns-modal-profile a{
+    display: flex;
+    width: fit-content;
+    font-size: 0.85rem;
+    color: var(--light-color);
+}
+
+.btns-modal-profile a:hover{
+    text-decoration: underline;
+}
+
+.btns-modal-profile .log-out{
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    color: var(--danger-color);
+}

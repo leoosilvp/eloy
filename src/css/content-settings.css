@@ -1,0 +1,377 @@
+.ctn-introduction {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-content-settings {
+    display: flex;
+    width: 100%;
+    height: fit-content;
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-content-settings h1 {
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+.content-change {
+    display: flex;
+    width: 100%;
+    height: 560px;
+    flex-direction: column;
+    padding: 20px;
+    gap: 25px;
+    overflow-y: scroll;
+}
+
+.content-change::-webkit-scrollbar{
+    display: flex;
+    width: 5px;
+}
+
+.content-change::-webkit-scrollbar-thumb{
+    background: var(--border-color);
+}
+
+.content-change p{
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--gray-color);
+}
+
+.content-change h1{
+    margin-bottom: 5px;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.content-change hr{
+    border: 1px solid var(--border-color);
+}
+
+.change-img-profile {
+    display: flex;
+    gap: 25px;
+}
+
+.change-img-profile img {
+    display: flex;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.change-img-profile button{
+    display: flex;
+    height: fit-content;
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.change-img-profile p{
+    margin-top: 5px;
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--gray-color);
+}
+
+.ctn-change-settings{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.change-name {
+    display: flex;
+    flex-direction: column;
+}
+
+.change-name {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.change-name label {
+    font-size: 1rem;
+}
+
+.change-name input {
+    display: flex;
+    width: 420px;
+    padding: 5px 8px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    background: var(--dark-color);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--light-color);
+}
+
+.change-title {
+    display: flex;
+    flex-direction: column;
+}
+
+.change-title {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.change-title label {
+    font-size: 1rem;
+}
+
+.change-title input {
+    display: flex;
+    width: 100%;
+    padding: 5px 8px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    background: var(--dark-color);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--light-color);
+}
+
+.change-state {
+    display: flex;
+    flex-direction: column;
+}
+
+.change-state {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.change-state label {
+    font-size: 1rem;
+}
+
+.change-state input {
+    display: flex;
+    width: 25%;
+    padding: 5px 8px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    background: var(--dark-color);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--light-color);
+}
+
+.change-country {
+    display: flex;
+    flex-direction: column;
+}
+
+.change-country {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.change-country label {
+    font-size: 1rem;
+}
+
+.change-country input {
+    display: flex;
+    width: 25%;
+    padding: 5px 8px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    background: var(--dark-color);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--light-color);
+}
+
+.change-birthday {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.change-birthday label {
+    font-size: 1rem;
+}
+
+.change-birthday input {
+    display: flex;
+    justify-content: center;
+    width: 25%;
+    padding: 5px 8px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    background: var(--dark-color);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--light-color);
+}
+
+.ctn-interests{
+    display: flex;
+    flex-direction: column;
+}
+
+.add-interests{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.add-interests label{
+    font-size: 1rem;
+}
+
+.add-interests input{
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    padding: 5px 8px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    background: var(--dark-color);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--light-color);
+}
+
+.interests{
+    display: flex;
+    flex-wrap: wrap;
+    padding: 15px;
+    gap: 10px;
+    background: var(--background-card);
+    border-radius: var(--border);
+}
+
+.interests p{
+    display: flex;
+    padding: 3px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    font-size: 0.85rem;
+    color: var(--light-color);
+    background: var(--background-card);
+}
+
+.change-about{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.change-about label{
+    font-size: 1rem;
+}
+
+.change-about textarea{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 200px;
+    padding: 5px 8px;
+    outline: none;
+    border: none;
+    resize: none;
+    border-radius: 3px;
+    background: var(--dark-color);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--light-color);
+    line-height: 17px;
+}
+
+.ctn-change-experiences{
+    display: flex;
+    flex-direction: column;
+}
+
+.ctn-add-experiences{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.ctn-add-experiences label{
+    margin-top: 7px;
+    font-size: 1rem;
+}
+
+.ctn-add-experiences input{
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    width: 200px;
+    padding: 5px 8px;
+    outline: none;
+    border: none;
+    border-radius: 3px;
+    background: var(--dark-color);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--light-color);
+}
+
+.ctn-add-experiences textarea{
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    width: 850px;
+    height: 200px;
+    padding: 5px 8px;
+    outline: none;
+    border: none;
+    resize: none;
+    border-radius: 3px;
+    background: var(--dark-color);
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--light-color);
+    line-height: 17px;
+}
+
+.ctn-my-experiences hr{
+    margin: 20px 0;
+}
+
+.ctn-my-academics hr{
+    margin: 20px 0;
+}
+
+.my-projects hr{
+    margin: 20px 0;
+}
+
+.my-projects p{
+    font-size: 0.85rem;
+    color: var(--gray-color);
+}
+
+.my-courses hr{
+    margin: 20px 0;
+}
+
+.my-languages hr{
+    margin: 20px 0;
+}
+
+.my-skills hr{
+    margin: 20px 0;
+}

@@ -1,0 +1,244 @@
+.ctn-chat-eloy {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    backdrop-filter: blur(1px);
+    z-index: 999;
+}
+
+.chat-eloy {
+    position: absolute;
+    bottom: 0;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    height: 500px;
+    background: var(--background-card);
+    border: 1.2px solid var(--border-color);
+    border-radius: 7px 7px 0 0;
+    box-shadow: 0 0 10px 2px var(--shadow-strong);
+    animation: fadeIn 0.2s ease;
+    color: var(--light-color);
+    font-family: 'Poppins', sans-serif;
+}
+
+.header-chat-eloy {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-chat-eloy h1 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--light-color);
+}
+
+.btns-header-chat-eloy {
+    display: flex;
+    gap: 15px;
+}
+
+.btns-header-chat-eloy button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    width: 25px;
+    height: 25px;
+    color: var(--light-color);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btns-header-chat-eloy button:hover {
+    background: var(--hover);
+}
+
+.ctn-options-chat-eloy{
+    position: absolute;
+    top: 54px;
+    right: 7px;
+    display: flex;
+    flex-direction: column;
+    padding: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    background: var(--background-card);
+}
+
+.ctn-options-chat-eloy button{
+    display: flex;
+    align-items: center;
+    padding: 5px 5px;
+    border: none;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    color: var(--muted-color);
+    background: transparent;
+    gap: 5px;
+}
+
+.ctn-options-chat-eloy button:hover{
+    background: var(--hover);
+}
+
+.content-chat-eloy {
+    flex: 1;
+    overflow-y: scroll;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.content-chat-eloy::-webkit-scrollbar {
+    display: flex;
+    width: 5px;
+}
+
+.content-chat-eloy::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+}
+
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.message {
+    max-width: 75%;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+.message.user {
+    align-self: flex-end;
+    background: var(--light-color);
+    color: var(--dark-color);
+    border-bottom-right-radius: 0;
+}
+
+.message.eloy {
+    align-self: flex-start;
+    max-width: 100%;
+    color: var(--light-color);
+    border-bottom-left-radius: 0;
+}
+
+.no-chat-eloy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.no-chat-eloy i {
+    font-size: 2.5rem;
+    color: var(--muted-color);
+}
+
+.no-chat-eloy h2 {
+    margin-top: 10px;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--muted-color);
+}
+
+.no-chat-eloy p {
+    text-align: center;
+    width: 220px;
+    font-size: 0.75rem;
+    font-weight: 300;
+    color: var(--muted-color);
+}
+
+.ctn-input-chat-eloy {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    gap: 13px;
+    border-top: 1px solid var(--border-color);
+}
+
+.ctn-input-chat-eloy textarea {
+    display: flex;
+    width: 420px;
+    height: 60px;
+    padding: 10px;
+    outline: none;
+    border: none;
+    resize: none;
+    border-radius: var(--border);
+    background: var(--dark-color);
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--light-color);
+}
+
+.ctn-input-chat-eloy textarea::-webkit-scrollbar {
+    display: flex;
+    width: 5px;
+}
+
+.ctn-input-chat-eloy textarea::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.send-message-chat-eloy {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--border-color);
+    padding: 10px 0 0 0;
+}
+
+.btn-left-chat-eloy {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-left-chat-eloy button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    background: transparent;
+    border-radius: 50%;
+    border: none;
+    color: var(--muted-color);
+    cursor: pointer;
+}
+
+.btn-left-chat-eloy button:hover {
+    background: var(--hover);
+}
+
+.send-btn {
+    background: var(--light-color);
+    color: var(--dark-color);
+    border: none;
+    padding: 4px 16px;
+    border-radius: 50px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.send-btn:hover {
+    background: var(--border-color);
+}

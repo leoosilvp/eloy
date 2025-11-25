@@ -1,0 +1,121 @@
+.right{
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    gap: 15px;
+}
+
+.card-ads{
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--border);
+    border: 1.2px solid var(--border-color);
+    background: var(--background-card);
+    overflow: hidden;
+}
+
+.content-ad{
+    display: flex;
+    align-items: end;
+    flex-direction: column;
+    padding: 15px;
+}
+
+.content-ad h1{
+    display: flex;
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.content-ad h2{
+    margin-top: 2px;
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--muted-color);
+}
+
+.content-ad a{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 2px 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background: var(--light-color);
+    color: var(--dark-color);
+    border-radius: 50px;
+}
+
+
+.newslatter{
+    display: flex;
+    flex-direction: column;
+    padding: 15px 0;
+    border: 1.2px solid var(--border-color);
+    border-radius: var(--border);
+    background: var(--background-card);
+    gap: 10px;
+}
+
+.ctn-cards-news{
+    display: flex;
+    flex-direction: column;
+}
+
+.header-newslatter{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 15px;
+}
+
+.header-newslatter h1{
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--light-color);
+}
+
+.header-newslatter button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px;
+    height: 15px;
+    font-size: 0.7rem;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+}
+
+.card-news{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 5px 0;
+    color: var(--gray-color);
+}
+
+.card-news:hover{
+    background: var(--hover);
+}
+
+.card-news h1{
+    margin-left: 15px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--light-color);
+}
+
+.sub-card-news{
+    display: flex;
+}
+
+.sub-card-news h2{
+    margin-left: 15px;
+    font-size: 0.80rem;
+    font-weight: 400;
+    color: var(--gray-color);
+}

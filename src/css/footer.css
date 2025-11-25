@@ -1,0 +1,36 @@
+footer{
+    margin-top: 60px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px 0;
+}
+
+.links-footer{
+    display: flex;
+    gap: 130px;
+}
+
+.links-footer ul{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.links-footer ul a{
+    font-size: 0.8rem;
+    color: var(--muted-color);  
+}
+
+.links-footer ul a:hover{
+    color: var(--muted-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+footer p{
+    margin-top: 40px;
+    font-size: 0.8rem;
+    font-weight: 200;
+    color: var(--muted-color);
+}

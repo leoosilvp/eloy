@@ -1,0 +1,273 @@
+.ctn-page-welcome{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background: var(--background);
+    z-index: 20;
+}
+
+.header-page-welcome{
+    background: var(--background);
+    border: none;
+    padding: 17px;
+    gap: 940px;
+}
+
+.header-page-welcome img{
+    display: flex;
+    width: 100px;
+}
+
+.btns-header-welcome{
+    display: flex;
+    gap: 20px;
+}
+
+.btns-header-welcome button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 50px;
+    border: 1px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.btns-header-welcome button:hover{
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btns-header-welcome .active{
+    background: var(--primary-color);
+    color: var(--on-primary);
+}
+
+.btns-header-welcome .active:hover{
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: var(--on-primary);
+}
+
+.content-welcome{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    padding: 90px 20px 0px 70px;
+    gap: 130px;
+    overflow: hidden;
+}
+
+.content-left-welcome{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.content-left-welcome a{
+    color: var(--primary-color);
+    font-weight: 500;
+}
+
+.content-left-welcome a:hover{
+    text-decoration: underline;
+}
+
+.content-left-welcome h1{
+    margin-bottom: 15px;
+    width: 550px;
+    font-size: 3.5rem;
+    font-weight: 400;
+    line-height: 73px;
+    letter-spacing: 1px;
+}
+
+.content-left-welcome p{
+    margin-top: 5px;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: 300;
+    width: 450px;
+    color: var(--gray-color);
+}
+
+.content-left-welcome button{
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 470px;
+    height: 40px;
+    border-radius: 50px;
+    border: 1px solid var(--light-color);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--light-color);
+    background: transparent;
+    gap: 7px;
+    cursor: pointer;
+}
+
+.content-left-welcome button:hover{
+    background: var(--light-color);
+    color: var(--dark-color);
+}
+
+.content-left-welcome h2{
+    font-size: 0.8rem;
+    font-weight: 400;
+    margin-top: 15px;
+    display: flex;
+    max-width: fit-content;
+    justify-content: center;
+    padding: 10px 20px;
+    border: 1px solid var(--light-color);
+    color: var(--light-color);
+    gap: 5px;
+    cursor: pointer;
+}
+
+.content-left-welcome h2:hover{
+    background: var(--light-color);
+    color: var(--dark-color);
+    font-weight: 500;
+}
+
+.img-right-welcome img{
+    display: flex;
+    width: 550px;
+}
+
+/* Responsive adjustments for smaller screens (tablet/mobile).
+   Desktop styles above remain unchanged. */
+@media (max-width: 1024px) {
+    /* Prevent lateral overflow on tablet by constraining containers */
+    html, body { overflow-x: hidden; }
+    .ctn-page-welcome{ width: 100%; left: 0; right: 0; overflow-x: hidden; max-width: 100%; box-sizing: border-box; }
+    .header-page-welcome{ width: 100%; box-sizing: border-box; }
+    .content-welcome{ max-width: 100%; width: 100%; overflow-x: hidden; box-sizing: border-box; }
+    .content-left-welcome, .img-right-welcome{ width: 100%; max-width: 100%; box-sizing: border-box; }
+    .header-page-welcome{
+        padding: 12px 18px;
+        gap: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .btns-header-welcome{ gap: 10px; }
+
+    .content-welcome{
+        flex-direction: row;
+        padding: 60px 20px 0 20px;
+        gap: 30px;
+        align-items: center;
+    }
+
+    .content-left-welcome h1{
+        width: 420px;
+        font-size: 2.4rem;
+        line-height: 44px;
+        text-align: left;
+    }
+
+    .content-left-welcome p{
+        width: 380px;
+        font-size: 0.9rem;
+        text-align: left;
+    }
+
+    .content-left-welcome button{
+        width: 380px;
+    }
+
+    .img-right-welcome img{ width: 420px; }
+}
+
+@media (max-width: 480px) {
+    .ctn-page-welcome{
+        /* Make the welcome container cover the viewport and scroll internally
+           so background/adjacent layout cannot appear while scrolling. */
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 100vh;
+        min-height: 100vh;
+        padding-bottom: 40px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        box-sizing: border-box;
+        z-index: 9999;
+        background: var(--background);
+    }
+
+    /* Stronger safeguards for mobile: ensure no child escapes viewport */
+    html, body { overflow-x: hidden; }
+    .ctn-page-welcome, .content-welcome, .header-page-welcome { max-width: 100%; box-sizing: border-box; }
+    .content-left-welcome, .img-right-welcome { width: 100%; max-width: 100%; }
+    .content-welcome{ padding-left: 12px; padding-right: 12px; }
+
+    .header-page-welcome{
+        padding: 12px 14px;
+        gap: 10px;
+    }
+
+    .header-page-welcome img{ width: 90px; }
+
+    .btns-header-welcome{ flex-wrap: wrap; gap: 8px; }
+
+    .content-welcome{
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .content-left-welcome{
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .content-left-welcome h1{
+        width: 100%;
+        font-size: 1.8rem;
+        line-height: 1.25;
+        margin-bottom: 8px;
+    }
+
+    .content-left-welcome p{
+        width: 100%;
+        font-size: 0.85rem;
+        padding: 0 6px;
+    }
+
+    .content-left-welcome button{
+        width: 100%;
+        max-width: 360px;
+        height: 44px;
+    }
+
+    .content-left-welcome h2{
+        width: 100%;
+        max-width: 360px;
+        justify-content: center;
+    }
+
+    .img-right-welcome{ order: -1; }
+    .img-right-welcome img{
+        width: 100%;
+        max-width: 360px;
+        height: auto;
+        display: block;
+    }
+}
