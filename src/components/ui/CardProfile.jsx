@@ -1,34 +1,45 @@
 import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { supabase } from "../../hook/supabaseClient";
 
-const CardProfile = ({local}) => {
+const CardProfile = () => {
 
     const { id } = useParams();
     const [userData, setUserData] = useState(null);
+    const [sessionUser, setSessionUser] = useState(null);
 
     useEffect(() => {
-        const user = localStorage.getItem(local);
-        if (!user) return;
+        const loadUser = async () => {
 
-        const usuarioLogado = JSON.parse(user);
+            // pegar sessão
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return;
 
-        fetch("/db/users.json")
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    const userInfo = data.find(u => u.id === usuarioLogado.id);
-                    if (userInfo) setUserData(userInfo);
-                }
-            })
-            .catch(err => console.error("Erro ao carregar JSON:", err));
-    }, [local]);
+            setSessionUser(user);
+
+            // buscar no supabase (tabela profiles)
+            const { data, error } = await supabase
+                .from("profiles")
+                .select("*")
+                .eq("id", user.id)
+                .single();
+
+            if (error) {
+                console.error("Erro ao buscar usuário:", error);
+                return;
+            }
+
+            setUserData(data);
+        };
+
+        loadUser();
+    }, []);
 
     if (!userData) return null;
 
-    const loggedUser = JSON.parse(localStorage.getItem("eloy_user"));
-    
+    // Redirecionamento correto
     const redirectLink =
-        !id || (loggedUser && loggedUser.id === id)
+        !id || (sessionUser && sessionUser.id === id)
             ? "/profile"
             : `/user/${id}`;
 

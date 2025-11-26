@@ -17,24 +17,22 @@ const Header = () => {
     const headerRef = useRef(null)
     const location = useLocation()
 
-    const { theme} = useTheme();
+    const { theme } = useTheme();
 
+    const [openProfileModal, setOpenProfileModal] = useState(false)
+    const [openSearch, setOpenSearch] = useState(false)
 
-    const [openProfileModal, setOpenProfileModal] = useState(false);
+    const hoverTimer = useRef(null)
 
-    const [openSearch, setOpenSearch] = useState(false);
+    /** Removido: handleNotificationClick (não era usado) */
 
-    const hoverTimer = useRef(null);
-
-    const handleNotificationClick = () => { };
-
+    // Exibir ponto de notificação se nunca entrou na página
     useEffect(() => {
         const notificationSeen = localStorage.getItem('notificationSeen') === 'true'
-        if (!notificationSeen) {
-            setShowNotification(true)
-        }
+        if (!notificationSeen) setShowNotification(true)
     }, [])
 
+    // Marca como vista ao abrir /notifications
     useEffect(() => {
         if (location.pathname === '/notifications') {
             setShowNotification(false)
@@ -42,17 +40,16 @@ const Header = () => {
         }
     }, [location.pathname])
 
+    // Corrige deslocamento do body ao fixar o header
     useEffect(() => {
         const el = headerRef.current
         if (!el) return
-        const height = el.getBoundingClientRect().height
-        document.body.style.paddingTop = `${height}px`
 
-        return () => {
-            document.body.style.paddingTop = ''
-        }
+        document.body.style.paddingTop = `${el.getBoundingClientRect().height}px`
+        return () => { document.body.style.paddingTop = '' }
     }, [])
 
+    // Mostrar / esconder header no scroll
     useEffect(() => {
         const update = () => {
             const currentY = window.scrollY || window.pageYOffset
@@ -60,13 +57,9 @@ const Header = () => {
             const threshold = 15
 
             if (Math.abs(delta) > threshold) {
-                if (currentY > lastScrollY.current && currentY > 120) {
-                    setHidden(true)
-                } else if (currentY + 50 < lastScrollY.current) {
-                    setHidden(false)
-                } else if (currentY <= 120) {
-                    setHidden(false)
-                }
+                if (currentY > lastScrollY.current && currentY > 120) setHidden(true)
+                else if (currentY + 50 < lastScrollY.current) setHidden(false)
+                else if (currentY <= 120) setHidden(false)
             }
 
             lastScrollY.current = currentY
@@ -84,62 +77,49 @@ const Header = () => {
         return () => window.removeEventListener('scroll', onScroll)
     }, [])
 
+    // Fecha modal de perfil ao clicar fora
     useEffect(() => {
-        const closeModal = () => setOpenProfileModal(false);
+        const close = () => setOpenProfileModal(false)
 
         const handleClickOutside = (e) => {
-            if (!document.querySelector(".modal-profile")?.contains(e.target)) {
-                closeModal();
-            }
-        };
+            if (!document.querySelector(".modal-profile")?.contains(e.target)) close()
+        }
 
-        window.addEventListener("scroll", closeModal);
-        window.addEventListener("mousedown", handleClickOutside);
+        window.addEventListener("scroll", close)
+        window.addEventListener("mousedown", handleClickOutside)
 
         return () => {
-            window.removeEventListener("scroll", closeModal);
-            window.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+            window.removeEventListener("scroll", close)
+            window.removeEventListener("mousedown", handleClickOutside)
+        }
+    }, [])
 
+    // Fecha modal de pesquisa ao clicar fora
     useEffect(() => {
-        if (!openSearch) return;
+        if (!openSearch) return
 
-        const close = () => setOpenSearch(false);
+        const close = () => setOpenSearch(false)
+        const isInside = (target) => {
+            const modal = document.querySelector(".ctn-search")
+            return modal && modal.contains(target)
+        }
 
-        const isInsideModal = (target) => {
-            const modal = document.querySelector(".ctn-search");
-            return modal && modal.contains(target);
-        };
+        const handle = (e) => {
+            if (!isInside(e.target)) close()
+        }
 
-        const handleClickOutside = (e) => {
-            if (!isInsideModal(e.target)) close();
-        };
-
-        const handleScroll = (e) => {
-            if (!isInsideModal(e.target)) close();
-        };
-
-        const handleWheel = (e) => {
-            if (!isInsideModal(e.target)) close();
-        };
-
-        const handleTouch = (e) => {
-            if (!isInsideModal(e.target)) close();
-        };
-
-        window.addEventListener("mousedown", handleClickOutside);
-        window.addEventListener("scroll", handleScroll, { passive: true });
-        window.addEventListener("wheel", handleWheel, { passive: true });
-        window.addEventListener("touchmove", handleTouch, { passive: true });
+        window.addEventListener("mousedown", handle)
+        window.addEventListener("scroll", handle, { passive: true })
+        window.addEventListener("wheel", handle, { passive: true })
+        window.addEventListener("touchmove", handle, { passive: true })
 
         return () => {
-            window.removeEventListener("mousedown", handleClickOutside);
-            window.removeEventListener("scroll", handleScroll);
-            window.removeEventListener("wheel", handleWheel);
-            window.removeEventListener("touchmove", handleTouch);
-        };
-    }, [openSearch]);
+            window.removeEventListener("mousedown", handle)
+            window.removeEventListener("scroll", handle)
+            window.removeEventListener("wheel", handle)
+            window.removeEventListener("touchmove", handle)
+        }
+    }, [openSearch])
 
 
     return (
@@ -165,41 +145,35 @@ const Header = () => {
                             <i className="fa-solid fa-home"></i> <p>Início</p>
                         </NavLink>
                     </li>
+
                     <li>
                         <NavLink to="/chat" className={({ isActive }) => isActive ? 'active' : ''}>
                             <i className="fa-solid fa-comments"></i> <p>Mensagens</p>
                             <div className='on-message'></div>
                         </NavLink>
                     </li>
+
                     <li>
                         <NavLink to="/publish" className={({ isActive }) => isActive ? 'active' : ''}>
                             <i className="fa-solid fa-square-plus"></i> <p>Publicar</p>
                         </NavLink>
                     </li>
+
                     <li>
-                        <NavLink
-                            to="/notifications"
-                            className={({ isActive }) => isActive ? 'active' : ''}
-                            onClick={handleNotificationClick}
-                        >
+                        <NavLink to="/notifications" className={({ isActive }) => isActive ? 'active' : ''}>
                             <i className="fa-solid fa-bell"></i> <p>Notificações</p>
                             {showNotification && <div className='on-notification'></div>}
                         </NavLink>
                     </li>
+
                     <li>
                         <NavLink
                             to="/profile"
                             className={({ isActive }) => isActive ? "active" : ""}
-
                             onMouseEnter={() => {
-                                hoverTimer.current = setTimeout(() => {
-                                    setOpenProfileModal(true);
-                                }, 650);
+                                hoverTimer.current = setTimeout(() => setOpenProfileModal(true), 650)
                             }}
-
-                            onMouseLeave={() => {
-                                clearTimeout(hoverTimer.current);
-                            }}
+                            onMouseLeave={() => clearTimeout(hoverTimer.current)}
                         >
                             <i className="fa-solid fa-circle-user"></i> <p>Eu</p>
                         </NavLink>

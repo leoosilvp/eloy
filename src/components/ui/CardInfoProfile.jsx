@@ -1,42 +1,45 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "../../hook/supabaseClient";
 
-const CardInfoProfile = ({local}) => {
+const CardInfoProfile = ({ local }) => {
 
   const [seguidores, setSeguidores] = useState(0);
   const [seguindo, setSeguindo] = useState(0);
   const [estrelas, setEstrelas] = useState(0);
 
   useEffect(() => {
-    const user = localStorage.getItem(local);
-    if (!user) return;
+    const loadData = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
 
-    const usuarioLogado = JSON.parse(user);
+      const userId = user.id;
 
-    fetch("/db/users.json")
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
+      // Contar seguidores -> quem me segue
+      const { count: totalSeguidores } = await supabase
+        .from("followers")
+        .select("id", { count: "exact", head: true })
+        .eq("following_id", userId);
 
-          const userData = data.find(u => u.id === usuarioLogado.id);
+      // Contar seguindo -> quem eu sigo
+      const { count: totalSeguindo } = await supabase
+        .from("followers")
+        .select("id", { count: "exact", head: true })
+        .eq("follower_id", userId);
 
-          if (userData) {
-            setSeguidores(
-              Array.isArray(userData.seguidores) ? userData.seguidores.length : 0
-            );
+      // Contar estrelas do usuário
+      const { count: totalEstrelas } = await supabase
+        .from("stars")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", userId);
 
-            setSeguindo(
-              Array.isArray(userData.seguindo) ? userData.seguindo.length : 0
-            );
+      setSeguidores(totalSeguidores || 0);
+      setSeguindo(totalSeguindo || 0);
+      setEstrelas(totalEstrelas || 0);
+    };
 
-            setEstrelas(
-              Array.isArray(userData.estrelas) ? userData.estrelas.length : 0
-            );
-          }
-        }
-      })
-      .catch(err => console.error("Erro ao carregar dados:", err));
-  });
+    loadData();
+  }, [local]);
 
   return (
     <article className="card-info-profile">

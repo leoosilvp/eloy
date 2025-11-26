@@ -8,6 +8,7 @@ import CardAds from "../components/ui/CardAds";
 import CardNewslatter from "../components/ui/CardNewslatter";
 import useAuthRedirect from "../hook/useAuthRedirect";
 import { NavLink } from "react-router-dom";
+import { supabase } from "../hook/supabaseClient";
 
 const Feed = () => {
 
@@ -15,6 +16,16 @@ const Feed = () => {
 
   const [posts, setPosts] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const [currentUserId, setCurrentUserId] = useState(null);
+
+  useEffect(() => {
+    const loadUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) setCurrentUserId(user.id);
+    };
+
+    loadUser();
+  }, []);
 
   const formatTime = (dateString) => {
     const postDate = new Date(dateString);
@@ -41,18 +52,14 @@ const Feed = () => {
       if (index % 2 === 0) return part;
 
       const mentionedId = part;
-
       const userFound = allUsers.find(u => u.id === mentionedId);
 
       if (!userFound) return "@" + mentionedId;
 
-      const currentUser = JSON.parse(localStorage.getItem("eloy_user"));
-      const isCurrentUser = currentUser?.id === mentionedId;
-
       return (
         <NavLink
           key={index}
-          to={isCurrentUser ? "/profile" : `/user/${userFound.id}`}
+          to={`/user/${userFound.id}`}
           className="mention-link"
         >
           @{mentionedId}
@@ -62,59 +69,51 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    fetch("/db/users.json")
-      .then(res => res.json())
-      .then(data => {
+    const loadFeed = async () => {
 
-        setAllUsers(data);
+      // Buscar todos os perfis
+      const { data: users } = await supabase
+        .from("profiles")
+        .select("*");
 
-        const allPosts = [];
+      setAllUsers(users || []);
 
-        data.forEach(user => {
-          if (user.posts && user.posts.length > 0) {
+      // Buscar posts
+      const { data: postsData } = await supabase
+        .from("posts")
+        .select("*")
+        .order("created_at", { ascending: false });
 
-            user.posts.forEach(post => {
-
-              const hasText = post.conteudo && String(post.conteudo).trim() !== "";
-              const hasLikes = Array.isArray(post.likes) && post.likes.length > 0;
-              const hasComments = Array.isArray(post.comentarios) && post.comentarios.length > 0;
-              const hasShares = Array.isArray(post.compartilhamentos) && post.compartilhamentos.length > 0;
-
-              const hasContent = hasText || hasLikes || hasComments || hasShares;
-
-              if (hasContent) {
-                allPosts.push({
-                  ...post,
-                  autor: user.nome,
-                  foto: user.foto,
-                  titulo: user.titulo,
-                  autorId: user.id
-                });
-              }
-            });
-
-          }
-        });
-
-        allPosts.sort((a, b) => new Date(b.dataTime) - new Date(a.dataTime));
-
-        setPosts(allPosts);
-      })
-      .catch(err => {
-        console.error("Erro ao carregar posts:", err);
+      if (!postsData) {
         setPosts([]);
-      });
-  }, []);
+        return;
+      }
 
-  const currentUser = JSON.parse(localStorage.getItem("eloy_user"));
-  const currentUserId = currentUser?.id;
+      // Misturar dados
+      const merged = postsData.map(post => {
+        const author = users.find(u => u.id === post.user_id);
+
+        return {
+          ...post,
+          autor: author?.nome || "Usuário",
+          foto: author?.foto,
+          titulo: author?.titulo,
+          autorId: author?.id
+        };
+      });
+
+      setPosts(merged);
+    };
+
+    loadFeed();
+  }, []);
 
   return (
     <section className="content">
 
       <aside className="left">
-        <CardProfile local='eloy_user'/>
-        <CardInfoProfile local='eloy_user'/>
+        <CardProfile /> 
+        <CardInfoProfile />
       </aside>
 
       <section className="feed">
@@ -124,15 +123,11 @@ const Feed = () => {
         )}
 
         {posts.map(post => (
-          <article key={`${post.autorId}_${post.id}`} className="post">
+          <article key={post.id} className="post">
 
             <NavLink
               className="header-post"
-              to={
-                post.autorId === currentUserId
-                  ? "/profile"
-                  : `/user/${post.autorId}`
-              }
+              to={post.user_id === currentUserId ? "/profile" : `/user/${post.user_id}`}
             >
               <div className="info-user-header-post">
                 <img src={post.foto || "assets/img/img-profile-default.png"} />
@@ -140,7 +135,7 @@ const Feed = () => {
                   <div className="name-data-post">
                     <h1>{post.autor}</h1>
                     <h3>•</h3>
-                    <h3>{formatTime(post.dataTime)}</h3>
+                    <h3>{formatTime(post.created_at)}</h3>
                   </div>
                   <h2>
                     {post.titulo?.length > 65
@@ -153,13 +148,13 @@ const Feed = () => {
             </NavLink>
 
             <section className="content-post">
-              <p>{renderContentWithMentions(post.conteudo)}</p>
+              <p>{renderContentWithMentions(post.content)}</p>
             </section>
 
             <section className="footer-post">
               <button>{post.likes?.length || 0}<i className="fa-regular fa-thumbs-up"></i>Curtir</button>
-              <button>{post.comentarios?.length || 0}<i className="fa-regular fa-comment"></i>Comentar</button>
-              <button>{post.compartilhamentos?.length || 0}<i className="fa-regular fa-share-from-square"></i>Compartilhar</button>
+              <button>{post.comments?.length || 0}<i className="fa-regular fa-comment"></i>Comentar</button>
+              <button>{post.shares?.length || 0}<i className="fa-regular fa-share-from-square"></i>Compartilhar</button>
             </section>
 
           </article>
