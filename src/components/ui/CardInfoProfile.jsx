@@ -3,39 +3,40 @@ import { Link } from "react-router-dom";
 import { supabase } from "../../hook/supabaseClient";
 
 const CardInfoProfile = ({ local }) => {
-
   const [seguidores, setSeguidores] = useState(0);
   const [seguindo, setSeguindo] = useState(0);
   const [estrelas, setEstrelas] = useState(0);
 
   useEffect(() => {
     const loadData = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
+      // Obter sessão atual
+      const { data: sessionData } = await supabase.auth.getSession();
+      const user = sessionData.session?.user;
 
+      if (!user) return;
       const userId = user.id;
 
-      // Contar seguidores -> quem me segue
-      const { count: totalSeguidores } = await supabase
+      // Contar seguidores -> quem segue o usuário
+      const { count: seguidoresCount } = await supabase
         .from("followers")
         .select("id", { count: "exact", head: true })
         .eq("following_id", userId);
 
-      // Contar seguindo -> quem eu sigo
-      const { count: totalSeguindo } = await supabase
+      // Contar seguindo -> quem o usuário segue
+      const { count: seguindoCount } = await supabase
         .from("followers")
         .select("id", { count: "exact", head: true })
         .eq("follower_id", userId);
 
       // Contar estrelas do usuário
-      const { count: totalEstrelas } = await supabase
+      const { count: estrelasCount } = await supabase
         .from("stars")
         .select("id", { count: "exact", head: true })
         .eq("user_id", userId);
 
-      setSeguidores(totalSeguidores || 0);
-      setSeguindo(totalSeguindo || 0);
-      setEstrelas(totalEstrelas || 0);
+      setSeguidores(seguidoresCount || 0);
+      setSeguindo(seguindoCount || 0);
+      setEstrelas(estrelasCount || 0);
     };
 
     loadData();
@@ -43,9 +44,17 @@ const CardInfoProfile = ({ local }) => {
 
   return (
     <article className="card-info-profile">
-      <Link to='/profile'>Seguidores: <span>{seguidores}</span></Link>
-      <Link to='/profile'>Seguindo: <span>{seguindo}</span></Link>
-      <Link to='/profile'>Estrelas: <span>{estrelas}</span></Link>
+      <Link to="/profile">
+        Seguidores: <span>{seguidores}</span>
+      </Link>
+
+      <Link to="/profile">
+        Seguindo: <span>{seguindo}</span>
+      </Link>
+
+      <Link to="/profile">
+        Estrelas: <span>{estrelas}</span>
+      </Link>
     </article>
   );
 };

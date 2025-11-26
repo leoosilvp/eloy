@@ -1,78 +1,52 @@
 import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { supabase } from "../../hook/supabaseClient";
+import useProfile from "../../hook/useProfile";
 
 const CardProfile = () => {
+  const { id } = useParams();
+  const { data: profile, isLoading } = useProfile();
 
-    const { id } = useParams();
-    const [userData, setUserData] = useState(null);
-    const [sessionUser, setSessionUser] = useState(null);
+  // Evita erro enquanto carrega
+  if (isLoading || !profile) return null;
 
-    useEffect(() => {
-        const loadUser = async () => {
+  const redirectLink =
+    !id || profile.id === id
+      ? "/profile"
+      : `/user/${id}`;
 
-            // pegar sessão
-            const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return;
+  const tituloLimite = (text = "") =>
+    text.length > 62 ? text.slice(0, 62) + "..." : text;
 
-            setSessionUser(user);
+  const bannerSrc =
+    profile.banner?.trim()
+      ? profile.banner
+      : "/assets/img/img-banner-default.png";
 
-            // buscar no supabase (tabela profiles)
-            const { data, error } = await supabase
-                .from("profiles")
-                .select("*")
-                .eq("id", user.id)
-                .single();
+  const fotoSrc =
+    profile.foto?.trim()
+      ? profile.foto
+      : "/assets/img/img-profile-default.png";
 
-            if (error) {
-                console.error("Erro ao buscar usuário:", error);
-                return;
-            }
+  return (
+    <Link to={redirectLink} className="card-profile">
+      <section className="banner-card-profile">
+        <img
+          src={bannerSrc}
+          alt="Banner do usuário"
+        />
+      </section>
 
-            setUserData(data);
-        };
+      <section className="user-card-profile">
+        <img
+          src={fotoSrc}
+          alt="Foto do usuário"
+        />
 
-        loadUser();
-    }, []);
-
-    if (!userData) return null;
-
-    // Redirecionamento correto
-    const redirectLink =
-        !id || (sessionUser && sessionUser.id === id)
-            ? "/profile"
-            : `/user/${id}`;
-
-    const tituloLimite = (text) => {
-        if (!text) return "";
-        return text.length > 62 ? text.substring(0, 62) + "..." : text;
-    };
-
-    const bannerSrc = userData.banner && userData.banner.trim() !== ""
-        ? userData.banner
-        : "/assets/img/img-banner-default.png";
-
-    const fotoSrc = userData.foto && userData.foto.trim() !== ""
-        ? userData.foto
-        : "/assets/img/img-profile-default.png";
-
-    return (
-        <Link to={redirectLink} className="card-profile">
-            <section className="banner-card-profile">
-                <img src={bannerSrc} alt="Banner do usuário" />
-            </section>
-
-            <section className="user-card-profile">
-                <img src={fotoSrc} alt="Foto do usuário" />
-
-                <h1 className="name-card-profile">{userData.nome}</h1>
-                <h2 className="title-card-profile">
-                    {tituloLimite(userData.titulo)}
-                </h2>
-                <h3 className="job-card-profile">{userData.cargo}</h3>
-            </section>
-        </Link>
-    );
+        <h1 className="name-card-profile">{profile.nome}</h1>
+        <h2 className="title-card-profile">{tituloLimite(profile.titulo)}</h2>
+        <h3 className="job-card-profile">{profile.cargo}</h3>
+      </section>
+    </Link>
+  );
 };
 
 export default CardProfile;

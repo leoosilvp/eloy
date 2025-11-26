@@ -24,15 +24,11 @@ const Header = () => {
 
     const hoverTimer = useRef(null)
 
-    /** Removido: handleNotificationClick (não era usado) */
-
-    // Exibir ponto de notificação se nunca entrou na página
     useEffect(() => {
         const notificationSeen = localStorage.getItem('notificationSeen') === 'true'
         if (!notificationSeen) setShowNotification(true)
     }, [])
 
-    // Marca como vista ao abrir /notifications
     useEffect(() => {
         if (location.pathname === '/notifications') {
             setShowNotification(false)
@@ -40,7 +36,6 @@ const Header = () => {
         }
     }, [location.pathname])
 
-    // Corrige deslocamento do body ao fixar o header
     useEffect(() => {
         const el = headerRef.current
         if (!el) return
@@ -49,7 +44,6 @@ const Header = () => {
         return () => { document.body.style.paddingTop = '' }
     }, [])
 
-    // Mostrar / esconder header no scroll
     useEffect(() => {
         const update = () => {
             const currentY = window.scrollY || window.pageYOffset
@@ -77,7 +71,6 @@ const Header = () => {
         return () => window.removeEventListener('scroll', onScroll)
     }, [])
 
-    // Fecha modal de perfil ao clicar fora
     useEffect(() => {
         const close = () => setOpenProfileModal(false)
 
@@ -94,7 +87,6 @@ const Header = () => {
         }
     }, [])
 
-    // Fecha modal de pesquisa ao clicar fora
     useEffect(() => {
         if (!openSearch) return
 
@@ -147,7 +139,7 @@ const Header = () => {
                     </li>
 
                     <li>
-                        <NavLink to="/chat" className={({ isActive }) => isActive ? 'active' : ''}>
+                        <NavLink to="" className={({ isActive }) => isActive ? 'active' : ''}>
                             <i className="fa-solid fa-comments"></i> <p>Mensagens</p>
                             <div className='on-message'></div>
                         </NavLink>

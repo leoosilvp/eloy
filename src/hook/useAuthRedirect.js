@@ -8,7 +8,7 @@ const useAuthRedirect = () => {
     const user = localStorage.getItem("access_token");
 
     if (!user) {
-      navigate("/auth", { replace: true });
+      navigate("/welcome", { replace: true });
     }
   }, [navigate]);
 };

@@ -44,7 +44,7 @@ function App() {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="*" element={<Error />} />
-          <Route path="/" element={<Navigate to="/welcome" replace />} />
+          <Route path="/" element={<Navigate to="/feed" replace />} />
           <Route path="/feed" element={<Feed />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/publish" element={<Publish />} />
