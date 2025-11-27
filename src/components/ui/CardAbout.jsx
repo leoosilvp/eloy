@@ -1,41 +1,37 @@
 import { useEffect, useState } from "react";
 import HeaderCard from "./HeaderCard";
+import useProfile from "../../hook/useProfile";
 
-const CardAbout = ({local}) => {
+const CardAbout = ({ profileId }) => {
+  const { data: me } = useProfile(); // usuário logado
+  const [sobre, setSobre] = useState("");
 
-    const [sobre, setSobre] = useState("");
+  useEffect(() => {
+    if (!me) return;
 
-    useEffect(() => {
-        const userLocal = localStorage.getItem(local);
+    // Se profileId não foi passado, assume que é o do usuário logado
+    const isUser = !profileId || profileId === me.id;
 
-        if (!userLocal) return;
+    if (isUser && me.resumo) {
+      setSobre(me.resumo);
+    } else {
+      setSobre("");
+    }
+  }, [me, profileId]);
 
-        const usuarioLogado = JSON.parse(userLocal);
+  // Não renderiza nada se não houver resumo
+  if (!sobre) return null;
 
-        fetch("/db/users.json")
-            .then(res => res.json())
-            .then(data => {
+  const adm = !profileId || profileId === me?.id;
 
-                const usuario = data.find(u => u.id === usuarioLogado.id);
-
-                if (usuario) {
-                    setSobre(usuario.resumo);
-                } else {
-                    console.warn("Usuário não encontrado no JSON");
-                }
-            })
-            .catch(err => console.error("Erro ao carregar JSON:", err));
-    });
-
-    return (
-        <section className="ctn-about">
-            <HeaderCard title='Sobre' to='about' adm={local === "eloy_user"} />
-
-            <article className="about">
-                <p>{sobre}</p>
-            </article>
-        </section>
-    );
+  return (
+    <section className="ctn-about">
+      <HeaderCard title="Sobre" to="about" adm={adm} />
+      <article className="about">
+        <p>{sobre}</p>
+      </article>
+    </section>
+  );
 };
 
 export default CardAbout;

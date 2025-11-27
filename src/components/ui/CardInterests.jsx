@@ -1,39 +1,34 @@
 import { useEffect, useState } from "react";
 import HeaderCard from "./HeaderCard";
+import useProfile from "../../hook/useProfile";
 
-const CardInterests = ({local}) => {
-
+const CardInterests = ({ profileId }) => {
+  const { data: me } = useProfile();
   const [interesses, setInteresses] = useState([]);
 
   useEffect(() => {
-    const user = localStorage.getItem(local);
-    if (!user) return;
+    if (!me) return;
 
-    const usuarioLogado = JSON.parse(user);
+    const isUser = !profileId || profileId === me.id;
 
-    fetch("/db/users.json")
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          const userData = data.find(u => u.id === usuarioLogado.id);
+    if (isUser && Array.isArray(me.areainteresses)) {
+      setInteresses(me.areainteresses);
+    } else {
+      setInteresses([]);
+    }
+  }, [me, profileId]);
 
-          if (userData && userData.areainteresses) {
-            setInteresses(userData.areainteresses);
-          }
-        }
-      })
-      .catch(err => console.error("Erro ao carregar interesses:", err));
-  });
+  if (!interesses || interesses.length === 0) return null;
+
+  const adm = !profileId || profileId === me?.id;
 
   return (
     <section className="ctn-card">
-      <HeaderCard title='Interesses' to='interests' adm={local === "eloy_user"} />
+      <HeaderCard title="Interesses" to="interests" adm={adm} />
       <section className="my-interests">
-
         {interesses.map((item, index) => (
           <p key={index}>{item}</p>
         ))}
-
       </section>
     </section>
   );
