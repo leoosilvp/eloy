@@ -213,24 +213,17 @@ const ContentProfile = () => {
             <button
               onClick={() => {
                 const link = `${window.location.origin}/api/share/${profile.user_name}`;
-
-                if (navigator.share) {
-                  navigator.share({
-                    title: `${profile.nome} no Eloy`,
-                    text: `Confira o perfil de ${profile.nome} no Eloy!`,
-                    url: link,
-                  });
-                } else {
-                  navigator.clipboard.writeText(link);
-                  alert("Link copiado!");
-                }
+                navigator.share
+                  ? navigator.share({
+                    title: `${profile.nome}`,
+                    text: "Veja meu perfil completo no Eloy.",
+                    url: link
+                  })
+                  : window.open(link, "_blank");
               }}
             >
-              Compartilhar perfil
+              Compartilhar
             </button>
-
-
-
           </>
         ) : (
           <>
