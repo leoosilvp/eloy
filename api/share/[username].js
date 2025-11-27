@@ -1,17 +1,16 @@
 import { createClient } from "@supabase/supabase-js";
 
-const SUPABASE_URL = "https://zwwxnssxjnujuhqjfkyc.supabase.co"; // mesma URL que você usa hoje
-const SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE_KEY; // 🔐 seguro no server!
+const SUPABASE_URL = "https://zwwxnssxjnujuhqjfkyc.supabase.co";
+const SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
 
 export default async function handler(req, res) {
   const { username } = req.query;
 
-  // Buscar dados do perfil
   const { data: user, error } = await supabase
     .from("profiles")
-    .select("user_name, nome, titulo, resumo, foto, banner")
+    .select("user_name, nome, titulo, foto")
     .eq("user_name", username)
     .single();
 
@@ -19,11 +18,15 @@ export default async function handler(req, res) {
     return res.status(404).send("<h1>Perfil não encontrado</h1>");
   }
 
-  const title = `${user.nome} — ${user.titulo || "Perfil no Eloy"}`;
-  const description = user.resumo || "Confira este perfil profissional no Eloy.";
-  const image = user.banner || user.foto;
+  const TITLE = `${user.nome} — ${user.titulo || ""}`.trim();
+  const FINAL_URL = `https://${req.headers.host}/user/${user.user_name}`;
 
-  const finalUrl = `${req.headers.host}/user/${user.user_name}`;
+  let IMAGE = user.foto || "";
+  
+  // Se a imagem for relativa, tornamos absoluta
+  if (IMAGE && !IMAGE.startsWith("http")) {
+    IMAGE = `https://${req.headers.host}${IMAGE}`;
+  }
 
   const html = `
 <!DOCTYPE html>
@@ -31,26 +34,25 @@ export default async function handler(req, res) {
 <head>
   <meta charset="utf-8"/>
 
-  <title>${title}</title>
+  <title>${TITLE}</title>
 
   <!-- Open Graph -->
-  <meta property="og:title" content="${title}" />
-  <meta property="og:description" content="${description}" />
-  <meta property="og:image" content="${image}" />
-  <meta property="og:url" content="https://${finalUrl}" />
+  <meta property="og:title" content="${TITLE}" />
+  <meta property="og:description" content="Conheça o perfil de ${user.nome} no Eloy" />
+  <meta property="og:image" content="${IMAGE}" />
+  <meta property="og:url" content="${FINAL_URL}" />
   <meta property="og:type" content="profile" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="${title}" />
-  <meta name="twitter:description" content="${description}" />
-  <meta name="twitter:image" content="${image}" />
-
+  <meta name="twitter:title" content="${TITLE}" />
+  <meta name="twitter description" content="Conheça o perfil de ${user.nome} no Eloy" />
+  <meta name="twitter:image" content="${IMAGE}" />
 </head>
 <body>
-  <script>
-    window.location.href = "/user/${user.user_name}";
-  </script>
+  <script>window.location.href = "/user/${user.user_name}";</script>
   <noscript>Redirecionando…</noscript>
 </body>
 </html>
