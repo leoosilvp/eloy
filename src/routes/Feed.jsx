@@ -52,10 +52,14 @@ const Feed = () => {
       if (index % 2 === 0) return part;
 
       const mentionedId = part;
-      const userFound = allUsers.find((u) => u.id === mentionedId);
+      const userFound = allUsers.find((u) => u.user_name === mentionedId);
 
       return userFound ? (
-        <NavLink key={index} to={`/user/${userFound.id}`} className="mention-link">
+        <NavLink
+          key={index}
+          to={`/user/${userFound.user_name}`}
+          className="mention-link"
+        >
           @{mentionedId}
         </NavLink>
       ) : (
@@ -85,9 +89,9 @@ const Feed = () => {
         return {
           ...post,
           autor: user?.nome || "Usuário",
+          autorUserName: user?.user_name || "",
           foto: user?.foto,
           titulo: user?.titulo,
-          autorId: user?.id,
           likes: post.likes || [],
           comments: post.comments || [],
           shares: post.shares || [],
@@ -100,28 +104,44 @@ const Feed = () => {
     loadFeed();
   }, []);
 
-  const handleLike = async (postId, likesArray) => {
+  const handleLike = async (postId) => {
     const { data } = await supabase.auth.getSession();
     const user = data.session?.user;
     if (!user) return;
 
     const userId = user.id;
-    const alreadyLiked = likesArray?.includes(userId);
+
+    const { data: postData, error: fetchError } = await supabase
+      .from("posts")
+      .select("likes")
+      .eq("id", postId)
+      .single();
+
+    if (fetchError || !postData) {
+      console.error("Erro ao buscar post:", fetchError);
+      return;
+    }
+
+    const currentLikes = postData.likes || [];
+    const alreadyLiked = currentLikes.includes(userId);
 
     const newLikes = alreadyLiked
-      ? likesArray.filter((id) => id !== userId)
-      : [...likesArray, userId];
+      ? currentLikes.filter((id) => id !== userId)
+      : [...currentLikes, userId];
 
-    const { error } = await supabase
+    const { error: updateError } = await supabase
       .from("posts")
       .update({ likes: newLikes })
       .eq("id", postId);
 
-    if (!error) {
-      setPosts((prev) =>
-        prev.map((p) => (p.id === postId ? { ...p, likes: newLikes } : p))
-      );
+    if (updateError) {
+      console.error("Erro ao salvar like:", updateError);
+      return;
     }
+
+    setPosts((prev) =>
+      prev.map((p) => (p.id === postId ? { ...p, likes: newLikes } : p))
+    );
   };
 
   return (
@@ -140,7 +160,11 @@ const Feed = () => {
           <article key={post.id} className="post">
             <NavLink
               className="header-post"
-              to={post.autorId === currentUserId ? "/profile" : `/user/${post.autorId}`}
+              to={
+                post.autorUserName === allUsers.find(u => u.id === currentUserId)?.user_name
+                  ? "/profile"
+                  : `/user/${post.autorUserName}`
+              }
             >
               <div className="info-user-header-post">
                 <img
@@ -172,7 +196,7 @@ const Feed = () => {
             </section>
 
             <section className="footer-post">
-              <button onClick={() => handleLike(post.id, post.likes)}>
+              <button onClick={() => handleLike(post.id)}>
                 {post.likes.length}
                 <i
                   className={

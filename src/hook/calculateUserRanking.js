@@ -36,12 +36,12 @@ export default async function calculateUserRanking(loggedUserId) {
         }, 0);
 
         const score =
-            seguidores * 4 +
-            estrelas * 3 +
+            seguidores * 5 +
+            estrelas * 6 +
             totalLikes * 2 +
             totalComentarios * 1 +
             totalCompartilhamentos * 2 +
-            atividadeRecente * 5;
+            atividadeRecente * 3;
 
         return {
             ...user,

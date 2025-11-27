@@ -1,47 +1,61 @@
 import { useEffect, useState } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import HeaderCard from "./HeaderCard";
-import useProfile from "../../hook/useProfile";
 import { supabase } from "../../hook/supabaseClient";
+import useProfile from "../../hook/useProfile";
 
-const CardMyCourses = ({ profileId }) => {
+const CardMyCourses = () => {
+  const { username } = useParams(); // pega da URL /user/:username
+  const location = useLocation();
   const { data: me } = useProfile(); // usuário logado
+
   const [certificacoes, setCertificacoes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [profileId, setProfileId] = useState(null);
 
   useEffect(() => {
-    if (!me) return;
+    const loadCourses = async () => {
+      setLoading(true);
 
-    const fetchCourses = async () => {
       try {
-        const id = profileId || me.id;
-
-        // Buscar certificações do perfil no Supabase
-        const { data: user, error } = await supabase
-          .from("profiles")
-          .select("id, certificacoes")
-          .eq("id", id)
-          .single();
-
-        if (error) {
-          console.error("Erro ao buscar certificações:", error);
+        // Se for /profile, pega do usuário logado
+        if (location.pathname === "/profile") {
+          setCertificacoes(me?.certificacoes || []);
+          setProfileId(me?.id || null);
           return;
         }
 
-        if (Array.isArray(user.certificacoes)) {
-          setCertificacoes(user.certificacoes);
-        } else {
-          setCertificacoes([]);
+        // Se for /user/:username, busca pelo user_name no Supabase
+        if (username) {
+          const { data, error } = await supabase
+            .from("profiles")
+            .select("id, certificacoes")
+            .ilike("user_name", username)
+            .single();
+
+          if (error || !data) {
+            setCertificacoes([]);
+            setProfileId(null);
+            return;
+          }
+
+          setCertificacoes(data.certificacoes || []);
+          setProfileId(data.id);
         }
       } catch (err) {
-        console.error("Erro ao carregar certificações:", err);
+        console.error("Erro ao buscar cursos do perfil:", err);
+        setCertificacoes([]);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchCourses();
-  }, [me, profileId]);
+    loadCourses();
+  }, [username, location.pathname, me]);
 
-  if (!certificacoes || certificacoes.length === 0) return null; // Não mostra se não houver cursos
+  if (loading || !certificacoes || certificacoes.length === 0) return null;
 
-  const adm = !profileId || profileId === me?.id;
+  const adm = location.pathname === "/profile" || profileId === me?.id;
 
   return (
     <section className="ctn-card">
@@ -49,17 +63,16 @@ const CardMyCourses = ({ profileId }) => {
 
       <section className="ctn-my-courses">
         {certificacoes.map((item, index) =>
-          item?.curso && (
+          item?.curso ? (
             <div key={index} className="courses">
               <article className="course">
                 <h1>{item.curso}</h1>
                 <h2>{item.instituicao}</h2>
                 <h3>{item.duracao}</h3>
               </article>
-
               {index < certificacoes.length - 1 && <hr />}
             </div>
-          )
+          ) : null
         )}
       </section>
     </section>

@@ -15,66 +15,74 @@ import CardNewslatter from '../components/ui/CardNewslatter';
 import CardAds from '../components/ui/CardAds';
 import CardFeedProfile from '../components/ui/CardFeedProfile';
 
-const User = () => {
+import { supabase } from '../hook/supabaseClient';
 
-  const { id } = useParams(); 
+const User = () => {
+  const { username } = useParams(); // pegando user_name da URL
   const navigate = useNavigate();
 
-  const [validUser, setValidUser] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const loadUserProfile = async () => {
+      setLoading(true);
 
-    const loggedUser = localStorage.getItem("eloy_user");
-    if (loggedUser) {
-      const loggedData = JSON.parse(loggedUser);
+      try {
+        // Pega sessão do usuário logado
+        const { data: sessionData } = await supabase.auth.getSession();
+        const loggedUserId = sessionData.session?.user?.id;
 
-      if (String(loggedData.id) === String(id)) {
-        navigate("/profile");
-        return;
-      }
-    }
+        // Busca dados do usuário pelo user_name
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("user_name", username) // busca pelo user_name
+          .single();
 
-    fetch("/db/users.json")
-      .then(res => res.json())
-      .then(data => {
-        const userExists =
-          Array.isArray(data) &&
-          data.some(u => String(u.id) === String(id));
-
-        if (userExists) {
-          localStorage.setItem("current_profile_id", JSON.stringify({ id: String(id) }));
-          setValidUser(true);
-        } else {
+        if (error || !data) {
           navigate("/error");
+          return;
         }
-      })
-      .catch(err => {
-        console.error("Erro ao carregar JSON:", err);
+
+        // Se for o mesmo usuário logado, redireciona para /profile
+        if (loggedUserId === data.id) {
+          navigate("/profile");
+          return;
+        }
+
+        setUserData(data);
+      } catch (err) {
+        console.error("Erro ao buscar usuário:", err);
         navigate("/error");
-      });
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  }, [id, navigate]);
+    loadUserProfile();
+  }, [username, navigate]);
 
-  if (!validUser) return null;
+  if (loading) return <p>Carregando...</p>;
+  if (!userData) return null;
 
   return (
     <section className="content">
       <section className="ctn-content-profile">
-
         <article className='card-content-profile'>
-          <BannerProfile local='current_profile_id' />
-          <ContentProfile local='current_profile_id' />
+          <BannerProfile user={userData} />
+          <ContentProfile user={userData} />
         </article>
-        <CardInterests local='current_profile_id'/>
-        <CardAbout local='current_profile_id'/>
-        <CardFeedProfile local='current_profile_id' />
-        <CardExperiences local='current_profile_id'/>
-        <CardAcademic local='current_profile_id'/>
-        <CardProjects local='current_profile_id'/>
-        <CardMyCourses local='current_profile_id'/>
-        <CardLanguages local='current_profile_id'/>
-        <CardSkills local='current_profile_id'/>
 
+        <CardInterests user={userData}/>
+        <CardAbout user={userData}/>
+        <CardFeedProfile user={userData}/>
+        <CardExperiences user={userData}/>
+        <CardAcademic user={userData}/>
+        <CardProjects user={userData}/>
+        <CardMyCourses user={userData}/>
+        <CardLanguages user={userData}/>
+        <CardSkills user={userData}/>
       </section>
 
       <aside className="right">

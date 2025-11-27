@@ -51,8 +51,8 @@ function App() {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/developers" element={<Devs />} />
-          <Route path="/user/:id" element={<User />} />
-          <Route path="/user/:id/feed profile" element={<FeedProfile />} />
+          <Route path="/user/:username" element={<User />} />
+          <Route path="/user/:username/feed profile" element={<FeedProfile />} />
           <Route path="/ranking" element={<Ranking />} />
 
           <Route path="/settings" element={<Settings />} >

@@ -1,57 +1,75 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams, useLocation } from "react-router-dom";
 import HeaderCard from "./HeaderCard";
 import useProfile from "../../hook/useProfile";
 import { supabase } from "../../hook/supabaseClient";
 
-const CardFeedProfile = ({ profileId }) => {
-  const { data: me } = useProfile(); // Usuário logado
+const CardFeedProfile = () => {
+  const { username } = useParams(); // pega da URL /user/:username
+  const location = useLocation();
+  const { data: me } = useProfile(); // usuário logado
+
   const [userData, setUserData] = useState(null);
   const [lastPost, setLastPost] = useState(null);
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!me) return;
     setCurrentUserId(me.id);
 
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const id = profileId || me.id;
+        let user = null;
 
-        // Busca o perfil
-        const { data: user, error: userError } = await supabase
-          .from("profiles")
-          .select("id, nome, foto, titulo")
-          .eq("id", id)
-          .single();
+        // Se for /profile, usa os dados do usuário logado
+        if (location.pathname === "/profile") {
+          user = me;
+        } else if (username) {
+          // Se for /user/:username, busca pelo user_name
+          const { data: userData, error: userError } = await supabase
+            .from("profiles")
+            .select("id, user_name, nome, foto, titulo")
+            .ilike("user_name", username)
+            .single();
 
-        if (userError || !user) {
-          console.error("Erro ao buscar perfil:", userError);
-          return;
+          if (userError || !userData) {
+            console.error("Erro ao buscar perfil:", userError);
+            setUserData(null);
+            setLastPost(null);
+            return;
+          }
+          user = userData;
         }
+
         setUserData(user);
 
-        // Busca o último post do perfil com likes, comentários e compartilhamentos
+        // Busca o último post do usuário (tanto /profile quanto /user/:username)
         const { data: posts, error: postsError } = await supabase
           .from("posts")
           .select("id, user_id, created_at, content, likes, comentarios, compartilhamentos")
-          .eq("user_id", id)
+          .eq("user_id", user.id)
           .order("created_at", { ascending: false })
           .limit(1);
 
         if (postsError) {
           console.error("Erro ao buscar posts:", postsError);
+          setLastPost(null);
           return;
         }
 
         setLastPost(posts && posts.length > 0 ? posts[0] : null);
       } catch (err) {
         console.error("Erro ao carregar feed:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, [me, profileId]);
+  }, [me, username, location.pathname]);
+
 
   const formatTime = (dateString) => {
     if (!dateString) return "";
@@ -68,7 +86,6 @@ const CardFeedProfile = ({ profileId }) => {
     return `${diffDays} dias`;
   };
 
-  // Função para curtir o post
   const handleLike = async (postId, likesArray) => {
     if (!currentUserId) return;
 
@@ -87,17 +104,16 @@ const CardFeedProfile = ({ profileId }) => {
       return;
     }
 
-    // Atualiza o post localmente
     setLastPost((prev) => ({ ...prev, likes: newLikes }));
   };
 
-  if (!userData) return null;
+  if (loading || !userData) return null;
 
-  const adm = !profileId || profileId === me?.id;
+  const adm = location.pathname === "/profile" || userData.id === me?.id;
 
   return (
     <section className="ctn-card">
-      <HeaderCard title="Publicações"/>
+      <HeaderCard title="Publicações" />
 
       <section className="ctn-feed-profile">
         <p className="title-card-feed-profile">Última publicação</p>
@@ -161,7 +177,7 @@ const CardFeedProfile = ({ profileId }) => {
       </section>
 
       <NavLink
-        to={`/user/${userData.id}/feed-profile`}
+        to={adm ? `/profile/feed-profile` : `/user/${userData.user_name}/feed-profile`}
         className="btn-to-feed-profile"
       >
         {adm ? "Acessar minhas publicações" : "Visualizar publicações"}

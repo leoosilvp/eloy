@@ -13,14 +13,17 @@ const CardProfile = () => {
       ? "/profile"
       : `/user/${id}`;
 
+  // Função segura para truncar título
   const tituloLimite = (text = "") =>
     text.length > 62 ? text.slice(0, 62) + "..." : text;
 
+  // Banner padrão se não houver
   const bannerSrc =
     profile.banner?.trim()
       ? profile.banner
       : "/assets/img/img-banner-default.png";
 
+  // Foto padrão se não houver
   const fotoSrc =
     profile.foto?.trim()
       ? profile.foto
@@ -42,7 +45,7 @@ const CardProfile = () => {
         />
 
         <h1 className="name-card-profile">{profile.nome}</h1>
-        <h2 className="title-card-profile">{tituloLimite(profile.titulo)}</h2>
+        <h2 className="title-card-profile">{tituloLimite(profile.titulo || "")}</h2>
         <h3 className="job-card-profile">{profile.cargo}</h3>
       </section>
     </Link>

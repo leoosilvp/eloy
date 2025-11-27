@@ -1,14 +1,162 @@
-import { useNavigate } from "react-router-dom";
-import useProfile from "../../hook/useProfile";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { supabase } from "../../hook/supabaseClient";
 
-const ContentProfile = ({ local }) => {
+const ContentProfile = () => {
   const navigate = useNavigate();
-  const { data: profile } = useProfile(); // 🔥 Correto para React Query
+  const { username } = useParams();
+  const location = useLocation();
 
-  if (!profile) return null; // Suspense vai evitar isso quase sempre
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isStarred, setIsStarred] = useState(false);
 
-  const seguidores = profile.seguidores?.length || 0;
-  const seguindo = profile.seguindo?.length || 0;
+  useEffect(() => {
+    const loadProfile = async () => {
+      setLoading(true);
+
+      try {
+        const { data: sessionData } = await supabase.auth.getSession();
+        const loggedUser = sessionData.session?.user;
+        setCurrentUserId(loggedUser?.id);
+
+        let profileData = null;
+
+        // /profile → perfil do usuário logado
+        if (location.pathname === "/profile") {
+          const { data, error } = await supabase
+            .from("profiles")
+            .select("*")
+            .eq("id", loggedUser?.id)
+            .single();
+
+          if (error || !data) throw error;
+          profileData = data;
+        } else if (username) {
+          // /user/:username → busca pelo user_name
+          const { data, error } = await supabase
+            .from("profiles")
+            .select("*")
+            .ilike("user_name", username)
+            .single();
+
+          if (error || !data) {
+            navigate("/error");
+            return;
+          }
+          profileData = data;
+
+          // verifica se logado segue este perfil
+          const { data: followData } = await supabase
+            .from("followers")
+            .select("*")
+            .eq("follower_id", loggedUser?.id)
+            .eq("following_id", data.id)
+            .single();
+
+          setIsFollowing(!!followData);
+        }
+
+        // Contagem de seguidores e seguindo
+        const { count: seguidoresCount } = await supabase
+          .from("followers")
+          .select("*", { count: "exact" })
+          .eq("following_id", profileData.id);
+
+        const { count: seguindoCount } = await supabase
+          .from("followers")
+          .select("*", { count: "exact" })
+          .eq("follower_id", profileData.id);
+
+        setProfile({
+          ...profileData,
+          seguidores: profileData.seguidores || [],
+          seguindo: profileData.seguindo || [],
+          estrelas: profileData.estrelas || [],
+          seguidoresCount: seguidoresCount || 0,
+          seguindoCount: seguindoCount || 0,
+        });
+
+        setIsStarred(profileData.estrelas?.includes(loggedUser?.id) || false);
+      } catch (err) {
+        console.error("Erro ao carregar perfil:", err);
+        navigate("/error");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProfile();
+  }, [username, location.pathname, navigate]);
+
+  const handleFollow = async () => {
+    if (!currentUserId || !profile?.id) return;
+
+    try {
+      if (isFollowing) {
+        // Deixar de seguir
+        await supabase
+          .from("followers")
+          .delete()
+          .eq("follower_id", currentUserId)
+          .eq("following_id", profile.id);
+
+        setIsFollowing(false);
+        setProfile((prev) => ({
+          ...prev,
+          seguidoresCount: prev.seguidoresCount - 1,
+          seguidores: (prev.seguidores || []).filter((id) => id !== currentUserId),
+        }));
+      } else {
+        // Seguir
+        await supabase.from("followers").insert({
+          follower_id: currentUserId,
+          following_id: profile.id,
+        });
+
+        setIsFollowing(true);
+        setProfile((prev) => ({
+          ...prev,
+          seguidoresCount: prev.seguidoresCount + 1,
+          seguidores: [...(prev.seguidores || []), currentUserId],
+        }));
+      }
+    } catch (err) {
+      console.error("Erro ao seguir/deixar de seguir:", err);
+    }
+  };
+
+  const handleStar = async () => {
+    if (!currentUserId || !profile?.id) return;
+
+    try {
+      const updatedStars = isStarred
+        ? (profile.estrelas || []).filter((id) => id !== currentUserId)
+        : [...(profile.estrelas || []), currentUserId];
+
+      await supabase
+        .from("profiles")
+        .update({ estrelas: updatedStars })
+        .eq("id", profile.id);
+
+      setIsStarred(!isStarred);
+      setProfile((prev) => ({
+        ...prev,
+        estrelas: updatedStars,
+      }));
+    } catch (err) {
+      console.error("Erro ao atualizar estrela:", err);
+    }
+  };
+
+  if (loading) return <p>Carregando...</p>;
+  if (!profile) return null;
+
+  const seguidores = profile.seguidoresCount || 0;
+  const seguindo = profile.seguindoCount || 0;
+  const isCurrentUser = location.pathname === "/profile";
 
   return (
     <section className="content-profile">
@@ -53,13 +201,7 @@ const ContentProfile = ({ local }) => {
       </section>
 
       <section className="btn-content-profile">
-        {local === "current_profile_id" ? (
-          <>
-            <button className="active">Seguir</button>
-            <button>Recomendar profissional</button>
-            <button onClick={() => navigate("/chat")}>Enviar mensagem</button>
-          </>
-        ) : (
+        {isCurrentUser ? (
           <>
             <button
               onClick={() => navigate("/settings/introduction")}
@@ -75,6 +217,16 @@ const ContentProfile = ({ local }) => {
               Minhas estatísticas
             </button>
             <button>Compartilhar perfil</button>
+          </>
+        ) : (
+          <>
+            <button className={isFollowing ? "active" : ""} onClick={handleFollow}>
+              {isFollowing ? "Seguindo" : "Seguir"}
+            </button>
+            <button className={isStarred ? "active" : ""} onClick={handleStar}>
+              {isStarred ? "Estrelado" : "Estrelar"}
+            </button>
+            <button onClick={() => navigate("/chat")}>Enviar mensagem</button>
           </>
         )}
       </section>
