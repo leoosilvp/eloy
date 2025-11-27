@@ -80,7 +80,7 @@ const Ranking = () => {
                     {top10.map((user) => (
                         <NavLink
                             key={user.id}
-                            to={`/user/${user.id}`}
+                            to={`/user/${user.user_name}`} // redireciona pelo user_name
                             className="card-position"
                         >
                             <div className="position">

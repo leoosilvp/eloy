@@ -12,31 +12,23 @@ const CardInfoProfile = ({ local }) => {
       // Obter sessão atual
       const { data: sessionData } = await supabase.auth.getSession();
       const user = sessionData.session?.user;
-
       if (!user) return;
-      const userId = user.id;
 
-      // Contar seguidores -> quem segue o usuário
-      const { count: seguidoresCount } = await supabase
-        .from("followers")
-        .select("id", { count: "exact", head: true })
-        .eq("following_id", userId);
+      // Buscar perfil do usuário logado
+      const { data: profileData, error } = await supabase
+        .from("profiles")
+        .select("seguidores, seguindo, estrelas")
+        .eq("id", user.id)
+        .single();
 
-      // Contar seguindo -> quem o usuário segue
-      const { count: seguindoCount } = await supabase
-        .from("followers")
-        .select("id", { count: "exact", head: true })
-        .eq("follower_id", userId);
+      if (error || !profileData) {
+        console.error("Erro ao carregar perfil:", error);
+        return;
+      }
 
-      // Contar estrelas do usuário
-      const { count: estrelasCount } = await supabase
-        .from("stars")
-        .select("id", { count: "exact", head: true })
-        .eq("user_id", userId);
-
-      setSeguidores(seguidoresCount || 0);
-      setSeguindo(seguindoCount || 0);
-      setEstrelas(estrelasCount || 0);
+      setSeguidores((profileData.seguidores || []).length);
+      setSeguindo((profileData.seguindo || []).length);
+      setEstrelas((profileData.estrelas || []).length);
     };
 
     loadData();

@@ -31,7 +31,6 @@ const ContentProfile = () => {
             .select("*")
             .eq("id", loggedUser?.id)
             .single();
-
           if (error || !data) throw error;
           profileData = data;
         } else if (username) {
@@ -41,7 +40,6 @@ const ContentProfile = () => {
             .select("*")
             .ilike("user_name", username)
             .single();
-
           if (error || !data) {
             navigate("/error");
             return;
@@ -49,34 +47,16 @@ const ContentProfile = () => {
           profileData = data;
 
           // verifica se logado segue este perfil
-          const { data: followData } = await supabase
-            .from("followers")
-            .select("*")
-            .eq("follower_id", loggedUser?.id)
-            .eq("following_id", data.id)
-            .single();
-
-          setIsFollowing(!!followData);
+          setIsFollowing(profileData.seguidores?.includes(loggedUser?.id) || false);
         }
-
-        // Contagem de seguidores e seguindo
-        const { count: seguidoresCount } = await supabase
-          .from("followers")
-          .select("*", { count: "exact" })
-          .eq("following_id", profileData.id);
-
-        const { count: seguindoCount } = await supabase
-          .from("followers")
-          .select("*", { count: "exact" })
-          .eq("follower_id", profileData.id);
 
         setProfile({
           ...profileData,
           seguidores: profileData.seguidores || [],
           seguindo: profileData.seguindo || [],
           estrelas: profileData.estrelas || [],
-          seguidoresCount: seguidoresCount || 0,
-          seguindoCount: seguindoCount || 0,
+          seguidoresCount: (profileData.seguidores || []).length,
+          seguindoCount: (profileData.seguindo || []).length,
         });
 
         setIsStarred(profileData.estrelas?.includes(loggedUser?.id) || false);
@@ -95,34 +75,48 @@ const ContentProfile = () => {
     if (!currentUserId || !profile?.id) return;
 
     try {
+      let updatedFollowers = [...(profile.seguidores || [])];
+      let updatedFollowing = [];
+
+      // pega os dados do usuário logado
+      const { data: currentUserData, error } = await supabase
+        .from("profiles")
+        .select("seguindo")
+        .eq("id", currentUserId)
+        .single();
+
+      if (error) throw error;
+      updatedFollowing = [...(currentUserData.seguindo || [])];
+
       if (isFollowing) {
         // Deixar de seguir
-        await supabase
-          .from("followers")
-          .delete()
-          .eq("follower_id", currentUserId)
-          .eq("following_id", profile.id);
-
+        updatedFollowers = updatedFollowers.filter((id) => id !== currentUserId);
+        updatedFollowing = updatedFollowing.filter((id) => id !== profile.id);
         setIsFollowing(false);
-        setProfile((prev) => ({
-          ...prev,
-          seguidoresCount: prev.seguidoresCount - 1,
-          seguidores: (prev.seguidores || []).filter((id) => id !== currentUserId),
-        }));
       } else {
         // Seguir
-        await supabase.from("followers").insert({
-          follower_id: currentUserId,
-          following_id: profile.id,
-        });
-
+        updatedFollowers.push(currentUserId);
+        updatedFollowing.push(profile.id);
         setIsFollowing(true);
-        setProfile((prev) => ({
-          ...prev,
-          seguidoresCount: prev.seguidoresCount + 1,
-          seguidores: [...(prev.seguidores || []), currentUserId],
-        }));
       }
+
+      // Atualiza perfil do usuário seguido
+      await supabase
+        .from("profiles")
+        .update({ seguidores: updatedFollowers })
+        .eq("id", profile.id);
+
+      // Atualiza perfil do usuário logado
+      await supabase
+        .from("profiles")
+        .update({ seguindo: updatedFollowing })
+        .eq("id", currentUserId);
+
+      setProfile((prev) => ({
+        ...prev,
+        seguidores: updatedFollowers,
+        seguidoresCount: updatedFollowers.length,
+      }));
     } catch (err) {
       console.error("Erro ao seguir/deixar de seguir:", err);
     }
@@ -133,8 +127,8 @@ const ContentProfile = () => {
 
     try {
       const updatedStars = isStarred
-        ? (profile.estrelas || []).filter((id) => id !== currentUserId)
-        : [...(profile.estrelas || []), currentUserId];
+        ? profile.estrelas.filter((id) => id !== currentUserId)
+        : [...profile.estrelas, currentUserId];
 
       await supabase
         .from("profiles")
@@ -216,7 +210,29 @@ const ContentProfile = () => {
             >
               Minhas estatísticas
             </button>
-            <button>Compartilhar perfil</button>
+            {/* Botão de compartilhar perfil */}
+            <button
+              onClick={() => {
+                const link = `${window.location.origin}/user/${profile.user_name}`;
+
+                if (navigator.share) {
+                  // Web Share API nativa
+                  navigator.share({
+                    title: `${profile.nome} no Eloy`,
+                    text: `Confira o perfil de ${profile.nome} no Eloy!`,
+                    url: link,
+                  }).catch((err) => console.error("Erro ao compartilhar:", err));
+                } else {
+                  // Fallback: copia para clipboard
+                  navigator.clipboard.writeText(link)
+                    .then(() => alert("Link copiado para a área de transferência!"))
+                    .catch(() => alert("Erro ao copiar o link."));
+                }
+              }}
+            >
+              Compartilhar perfil
+            </button>
+
           </>
         ) : (
           <>

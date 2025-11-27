@@ -1,69 +1,83 @@
 import { supabase } from "../hook/supabaseClient";
 
 export default async function calculateUserRanking(loggedUserId) {
-    // 🔥 Buscar perfis
-    const { data: users } = await supabase
-        .from("profiles")
-        .select("id, nome, foto, titulo, seguidores, estrelas");
+  // Buscar perfis
+  const { data: users, error: usersError } = await supabase
+    .from("profiles")
+    .select("id, user_name, nome, foto, titulo, seguidores, seguindo, estrelas");
 
-    if (!users) return [];
+  if (usersError || !users) {
+    console.error("Erro ao buscar perfis:", usersError);
+    return [];
+  }
 
-    // 🔥 Buscar posts
-    const { data: posts } = await supabase
-        .from("posts")
-        .select("id, author_id, created_at, likes, comentarios, compartilhamentos");
+  // Buscar posts
+  const { data: posts, error: postsError } = await supabase
+    .from("posts")
+    .select("id, user_id, created_at, likes, comentarios, compartilhamentos");
 
-    // 🔥 Calcular ranking
-    const ranking = users.map(user => {
-        const seguidores = Array.isArray(user.seguidores) ? user.seguidores.length : 0;
-        const estrelas = user.estrelas || 0;
+  if (postsError || !posts) {
+    console.error("Erro ao buscar posts:", postsError);
+    return [];
+  }
 
-        const userPosts = posts?.filter(p => p.author_id === user.id) || [];
-        const totalLikes = userPosts.reduce((s, p) => s + (p.likes || 0), 0);
-        const totalComentarios = userPosts.reduce(
-            (s, p) => s + (Array.isArray(p.comentarios) ? p.comentarios.length : 0),
-            0
-        );
-        const totalCompartilhamentos = userPosts.reduce(
-            (s, p) => s + (p.compartilhamentos || 0),
-            0
-        );
+  const now = new Date();
 
-        const now = new Date();
-        const atividadeRecente = userPosts.reduce((sum, p) => {
-            const days = (now - new Date(p.created_at)) / (1000 * 60 * 60 * 24);
-            return sum + Math.max(0, 1 - days / 30);
-        }, 0);
+  // Calcular ranking
+  const ranking = users.map(user => {
+    const seguidoresCount = Array.isArray(user.seguidores) ? user.seguidores.length : 0;
+    const seguindoCount = Array.isArray(user.seguindo) ? user.seguindo.length : 0;
+    const estrelasCount = Array.isArray(user.estrelas) ? user.estrelas.length : 0;
 
-        const score =
-            seguidores * 5 +
-            estrelas * 6 +
-            totalLikes * 2 +
-            totalComentarios * 1 +
-            totalCompartilhamentos * 2 +
-            atividadeRecente * 3;
+    const userPosts = posts.filter(p => p.author_id === user.id) || [];
+    const totalLikes = userPosts.reduce((sum, p) => sum + Number(p.likes || 0), 0);
+    const totalComentarios = userPosts.reduce(
+      (sum, p) => sum + (Array.isArray(p.comentarios) ? p.comentarios.length : 0),
+      0
+    );
+    const totalCompartilhamentos = userPosts.reduce(
+      (sum, p) => sum + Number(p.compartilhamentos || 0),
+      0
+    );
 
-        return {
-            ...user,
-            seguidores,
-            estrelas,
-            totalLikes,
-            totalComentarios,
-            totalCompartilhamentos,
-            atividadeRecente,
-            score
-        };
-    });
+    // Atividade recente (posts nos últimos 30 dias)
+    const atividadeRecente = userPosts.reduce((sum, p) => {
+      const days = (now - new Date(p.created_at)) / (1000 * 60 * 60 * 24);
+      return sum + Math.max(0, 1 - days / 30);
+    }, 0);
 
-    // 🔥 Ordena pelo score
-    ranking.sort((a, b) => b.score - a.score);
+    // Cálculo de score
+    const score =
+      seguidoresCount * 6 +
+      estrelasCount * 7 +
+      totalLikes * 2 +
+      totalComentarios * 1.1 +
+      totalCompartilhamentos * 1.5 +
+      atividadeRecente * 0.5;
 
-    ranking.forEach((u, i) => {
-        u.posicao = i + 1;
-        if (u.id === loggedUserId) {
-            localStorage.setItem("myRankingPos", String(u.posicao));
-        }
-    });
+    return {
+      ...user,
+      seguidoresCount,
+      seguindoCount,
+      estrelasCount,
+      totalLikes,
+      totalComentarios,
+      totalCompartilhamentos,
+      atividadeRecente,
+      score,
+    };
+  });
 
-    return ranking;
+  // Ordena pelo score
+  ranking.sort((a, b) => b.score - a.score);
+
+  // Salvar posição do usuário logado em cache
+  ranking.forEach((u, i) => {
+    u.posicao = i + 1;
+    if (u.id === loggedUserId) {
+      localStorage.setItem("myRankingPos", String(u.posicao));
+    }
+  });
+
+  return ranking;
 }
