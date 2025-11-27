@@ -1,13 +1,14 @@
 import { createClient } from "@supabase/supabase-js";
 
 const SUPABASE_URL = "https://zwwxnssxjnujuhqjfkyc.supabase.co";
-const ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY;
+const ANON = process.env.VITE_SUPABASE_ANON_KEY;
 
-const supabase = createClient(SUPABASE_URL, ANON_KEY);
+const supabase = createClient(SUPABASE_URL, ANON);
 
 export default async function handler(req, res) {
   const { username } = req.query;
 
+  // Busca o perfil
   const { data: user, error } = await supabase
     .from("profiles")
     .select("user_name, nome, titulo, foto")
@@ -20,10 +21,14 @@ export default async function handler(req, res) {
 
   const NAME = user.nome || "Sem Nome";
   const TITLE = user.titulo || "Sem Título";
-  const IMAGE = user.foto || "https://img.freepik.com/vetores-premium/icone-de-perfil-de-avatar-padrao-imagem-de-usuario-de-midia-social-icone-de-avatar-cinza-silhueta-de-profil.jpg";
+  const IMAGE =
+    user.foto ||
+    "https://img.freepik.com/vetores-premium/icone-de-perfil.jpg";
 
+  // URL final do perfil
   const FINAL_URL = `https://${req.headers.host}/user/${user.user_name}`;
 
+  // HTML correto para bots e para humanos
   const html = `
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -32,34 +37,33 @@ export default async function handler(req, res) {
 
   <title>${NAME} — ${TITLE}</title>
 
-  <!-- OPEN GRAPH -->
+  <!-- OG -->
   <meta property="og:title" content="${NAME} — ${TITLE}" />
   <meta property="og:description" content="Conheça o perfil de ${NAME} no Eloy" />
   <meta property="og:image" content="${IMAGE}" />
   <meta property="og:url" content="${FINAL_URL}" />
   <meta property="og:type" content="profile" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
 
-  <!-- TWITTER -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="${NAME} — ${TITLE}" />
-  <meta name="twitter:description" content="Conheça o perfil de ${NAME} no Eloy" />
-  <meta name="twitter:image" content="${IMAGE}" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${NAME} — ${TITLE}">
+  <meta name="twitter:description" content="Conheça o perfil de ${NAME} no Eloy">
+  <meta name="twitter:image" content="${IMAGE}">
 
   <script>
-    // Redireciona SOMENTE humanos
-    if (!navigator.userAgent.includes("bot") &&
-        !navigator.userAgent.includes("facebookexternalhit") &&
-        !navigator.userAgent.includes("WhatsApp") &&
-        !navigator.userAgent.includes("Twitterbot")) {
+    // Detecta BOT: eles NÃO devem ser redirecionados
+    const isBot =
+      /bot|crawl|spider|facebookexternalhit|WhatsApp|twitterbot/i.test(navigator.userAgent);
+
+    // HUMANO → redirecionar automaticamente
+    if (!isBot) {
       window.location.href = "${FINAL_URL}";
     }
   </script>
 </head>
 
 <body>
-  <p>Redirecionando para o perfil de ${NAME}…</p>
+  <p>Redirecionando...</p>
 </body>
 </html>
 `;
