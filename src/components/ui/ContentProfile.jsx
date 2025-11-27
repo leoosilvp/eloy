@@ -213,7 +213,7 @@ const ContentProfile = () => {
             {/* Botão de compartilhar perfil */}
             <button
               onClick={() => {
-                const link = `${window.location.origin}/user/${profile.user_name}`;
+                const link = `${window.location.origin}/api/share/${profile.user_name}`;
 
                 if (navigator.share) {
                   // Web Share API nativa

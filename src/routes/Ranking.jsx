@@ -8,8 +8,12 @@ import CardProfile from "../components/ui/CardProfile";
 
 import calculateUserRanking from "../hook/calculateUserRanking";
 import useProfile from "../hook/useProfile";
+import useAuthRedirect from "../hook/useAuthRedirect";
 
 const Ranking = () => {
+
+    useAuthRedirect();
+
     const { data: me } = useProfile();
     const [top10, setTop10] = useState([]);
 
