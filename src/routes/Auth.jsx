@@ -35,6 +35,7 @@ const Auth = () => {
         if (token) localStorage.setItem("access_token", token);
 
         navigate("/feed");
+        window.location.reload();
     }
 
     async function handleCreateAccount() {

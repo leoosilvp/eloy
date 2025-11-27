@@ -49,7 +49,14 @@ const ModalProfile = ({ open, setOpen }) => {
                 <NavLink to="/profile">Meu perfil</NavLink>
                 <NavLink to="https://eloydashboard.vercel.app/" target="_blank">Minhas estatísticas</NavLink>
                 <NavLink to="/settings/appearance">Configurações</NavLink>
-                <NavLink className="log-out" to="/welcome">
+
+                <NavLink
+                    className="log-out"
+                    to="/welcome"
+                    onClick={() => {
+                        localStorage.clear();
+                    }}
+                >
                     <i className="fa-solid fa-arrow-right-from-bracket"></i>
                     Sair
                 </NavLink>

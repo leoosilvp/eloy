@@ -7,11 +7,12 @@ import Search from './Search'
 import '../css/header.css'
 import Reputation from './ui/Reputation'
 import { useTheme } from "../hook/ThemeContext.jsx";
+import useProfile from "../hook/useProfile";
+import useNotifications from "../hook/useNotifications";
 
 const Header = () => {
 
     const [hidden, setHidden] = useState(false)
-    const [showNotification, setShowNotification] = useState(false)
     const lastScrollY = useRef(0)
     const ticking = useRef(false)
     const headerRef = useRef(null)
@@ -24,17 +25,15 @@ const Header = () => {
 
     const hoverTimer = useRef(null)
 
-    useEffect(() => {
-        const notificationSeen = localStorage.getItem('notificationSeen') === 'true'
-        if (!notificationSeen) setShowNotification(true)
-    }, [])
+    // PEGAR USER LOGADO
+    const { data: user } = useProfile();
 
-    useEffect(() => {
-        if (location.pathname === '/notifications') {
-            setShowNotification(false)
-            localStorage.setItem('notificationSeen', 'true')
-        }
-    }, [location.pathname])
+    // NOTIFICAÇÕES EM TEMPO REAL
+    const { hasNotification } = useNotifications(user?.id);
+
+    // remover localStorage antigo (vazio apenas para não quebrar nada)
+    useEffect(() => { }, []);
+    useEffect(() => { }, [location.pathname]);
 
     useEffect(() => {
         const el = headerRef.current
@@ -154,7 +153,7 @@ const Header = () => {
                     <li>
                         <NavLink to="/notifications" className={({ isActive }) => isActive ? 'active' : ''}>
                             <i className="fa-solid fa-bell"></i> <p>Notificações</p>
-                            {showNotification && <div className='on-notification'></div>}
+                            {hasNotification && <div className='on-notification'></div>}
                         </NavLink>
                     </li>
 
