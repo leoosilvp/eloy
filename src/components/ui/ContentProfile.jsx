@@ -216,22 +216,21 @@ const ContentProfile = () => {
                 const link = `${window.location.origin}/api/share/${profile.user_name}`;
 
                 if (navigator.share) {
-                  // Web Share API nativa
                   navigator.share({
                     title: `${profile.nome} no Eloy`,
                     text: `Confira o perfil de ${profile.nome} no Eloy!`,
                     url: link,
-                  }).catch((err) => console.error("Erro ao compartilhar:", err));
+                  }).catch(console.error);
                 } else {
-                  // Fallback: copia para clipboard
                   navigator.clipboard.writeText(link)
-                    .then(() => alert("Link copiado para a área de transferência!"))
-                    .catch(() => alert("Erro ao copiar o link."));
+                    .then(() => alert("Link copiado!"))
+                    .catch(() => alert("Erro ao copiar."));
                 }
               }}
             >
               Compartilhar perfil
             </button>
+
 
           </>
         ) : (

@@ -8,10 +8,6 @@ const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
 export default async function handler(req, res) {
   const { username } = req.query;
 
-  // Detectar bots para OG tags funcionarem
-  const ua = req.headers["user-agent"]?.toLowerCase() || "";
-  const isBot = /(bot|crawler|spider|facebook|whatsapp|linkedin|twitter)/.test(ua);
-
   const { data: user, error } = await supabase
     .from("profiles")
     .select("user_name, nome, titulo, foto")
@@ -22,48 +18,42 @@ export default async function handler(req, res) {
     return res.status(404).send("<h1>Perfil não encontrado</h1>");
   }
 
-  const TITLE = `${user.nome} — ${user.titulo || ""}`.trim();
+  const NAME = user.nome;
+  const TITLE = user.titulo || "";
+  const IMAGE = user.foto || "https://via.placeholder.com/600x400?text=Eloy";
+
+  // URL FINAL do perfil
   const FINAL_URL = `https://${req.headers.host}/user/${user.user_name}`;
 
-  let IMAGE = user.foto || "";
-
-  // Se for caminho relativo → tornar absoluto
-  if (IMAGE && !IMAGE.startsWith("http")) {
-    IMAGE = `https://${req.headers.host}${IMAGE}`;
-  }
-
-  // Se NÃO for bot → redirecionar normalmente
-  if (!isBot) {
-    return res.redirect(302, FINAL_URL);
-  }
-
-  // Se for bot → retornar metatags OG
   const html = `
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
 
-  <title>${TITLE}</title>
+  <title>${NAME} — ${TITLE}</title>
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="${TITLE}">
-  <meta property="og:description" content="Conheça o perfil de ${user.nome} no Eloy">
-  <meta property="og:image" content="${IMAGE}">
-  <meta property="og:url" content="${FINAL_URL}">
-  <meta property="og:type" content="profile">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
+  <!-- OPEN GRAPH -->
+  <meta property="og:title" content="${NAME} — ${TITLE}" />
+  <meta property="og:description" content="Conheça o perfil de ${NAME} no Eloy" />
+  <meta property="og:image" content="${IMAGE}" />
+  <meta property="og:url" content="${FINAL_URL}" />
+  <meta property="og:type" content="profile" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${TITLE}">
-  <meta name="twitter:description" content="Conheça o perfil de ${user.nome} no Eloy">
-  <meta name="twitter:image" content="${IMAGE}">
+  <!-- TWITTER -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="${NAME} — ${TITLE}" />
+  <meta name="twitter:description" content="Conheça o perfil de ${NAME} no Eloy" />
+  <meta name="twitter:image" content="${IMAGE}" />
+
+  <!-- REDIRECIONAMENTO -->
+  <meta http-equiv="refresh" content="0; url=${FINAL_URL}" />
 </head>
 
 <body>
-  Redirecionando para o perfil de ${user.nome}…
+  <p>Redirecionando para o perfil de ${NAME}…</p>
 </body>
 </html>
 `;
