@@ -46,7 +46,7 @@ function App() {
           <Route path="*" element={<Error />} />
           <Route path="/" element={<Navigate to="/feed" replace />} />
           <Route path="/feed" element={<Feed />} />
-          <Route path="/chat" element={<Chat />} />
+          
           <Route path="/publish" element={<Publish />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/profile" element={<Profile />} />

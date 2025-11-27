@@ -57,7 +57,7 @@ const Devs = () => {
                     </div>
                     <div>
                         <h1 className="title-developer-position">Colaboração:</h1>
-                        <p className="developer-position">Desenvolvimento Back-end</p>
+                        <p className="developer-position">Desenvolvimento eloy AI</p>
                     </div>
 
                     <section className="developer-links">

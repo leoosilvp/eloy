@@ -139,7 +139,7 @@ const Header = () => {
                     </li>
 
                     <li>
-                        <NavLink to="" className={({ isActive }) => isActive ? 'active' : ''}>
+                        <NavLink to="/chat" className={({ isActive }) => isActive ? 'active' : ''}>
                             <i className="fa-solid fa-comments"></i> <p>Mensagens</p>
                             <div className='on-message'></div>
                         </NavLink>

@@ -20,9 +20,10 @@ const Search = () => {
   const limitText = (text, max = 68) =>
     text && text.length > max ? text.slice(0, max) + "..." : text;
 
-  const openProfile = (id) => {
-    navigate(`/user/${id}`);
-    window.location.reload();
+  // 🚀 Alterado para abrir pelo user_name
+  const openProfile = (user_name) => {
+    navigate(`/user/${user_name}`);
+    window.location.reload(); // opcional, mantém seu comportamento
   };
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const Search = () => {
       try {
         const { data: allUsers, error } = await supabase
           .from("profiles")
-          .select("id, nome, foto, titulo, area, cargo, areainteresses");
+          .select("id, user_name, nome, foto, titulo, area, cargo, areainteresses");
 
         if (error) throw error;
 
@@ -81,7 +82,6 @@ const Search = () => {
               score += matches * 4;
             }
 
-            // Sinônimos fracos
             const weakSynonyms = [
               ["tecnologia", "ti", "desenvolvimento", "programacao", "dev"],
               ["marketing", "publicidade", "branding"],
@@ -150,7 +150,7 @@ const Search = () => {
               <article
                 className='user'
                 key={user.id}
-                onClick={() => openProfile(user.id)}
+                onClick={() => openProfile(user.user_name)}
               >
                 <section className='info-user'>
                   <img src={user.foto || "assets/img/img-profile-default.png"} />
@@ -173,7 +173,7 @@ const Search = () => {
               <article
                 className='user'
                 key={user.id}
-                onClick={() => openProfile(user.id)}
+                onClick={() => openProfile(user.user_name)}
               >
                 <section className='info-user'>
                   <img src={user.foto || "assets/img/img-profile-default.png"} />
