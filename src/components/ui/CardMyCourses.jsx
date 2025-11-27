@@ -1,53 +1,69 @@
 import { useEffect, useState } from "react";
 import HeaderCard from "./HeaderCard";
+import useProfile from "../../hook/useProfile";
+import { supabase } from "../../hook/supabaseClient";
 
-const CardMyCourses = ({local}) => {
+const CardMyCourses = ({ profileId }) => {
+  const { data: me } = useProfile(); // usuário logado
+  const [certificacoes, setCertificacoes] = useState([]);
 
-    const [certificacoes, setCertificacoes] = useState([]);
+  useEffect(() => {
+    if (!me) return;
 
-    useEffect(() => {
-        const user = localStorage.getItem(local);
-        if (!user) return;
+    const fetchCourses = async () => {
+      try {
+        const id = profileId || me.id;
 
-        const usuarioLogado = JSON.parse(user);
+        // Buscar certificações do perfil no Supabase
+        const { data: user, error } = await supabase
+          .from("profiles")
+          .select("id, certificacoes")
+          .eq("id", id)
+          .single();
 
-        fetch("/db/users.json")
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    const userData = data.find(u => u.id === usuarioLogado.id);
+        if (error) {
+          console.error("Erro ao buscar certificações:", error);
+          return;
+        }
 
-                    if (Array.isArray(userData?.certificacoes)) {
-                        setCertificacoes(userData.certificacoes);
-                    }
-                }
-            })
-            .catch(err => console.error("Erro ao carregar JSON:", err));
-    });
+        if (Array.isArray(user.certificacoes)) {
+          setCertificacoes(user.certificacoes);
+        } else {
+          setCertificacoes([]);
+        }
+      } catch (err) {
+        console.error("Erro ao carregar certificações:", err);
+      }
+    };
 
-    return (
-        <section className="ctn-card">
-            <HeaderCard title='Meus cursos' btnPlus to='courses' adm={local === "eloy_user"} />
+    fetchCourses();
+  }, [me, profileId]);
 
-            <section className="ctn-my-courses">
+  if (!certificacoes || certificacoes.length === 0) return null; // Não mostra se não houver cursos
 
-                {certificacoes.map((item, index) =>
-                    item?.curso && (
-                        <div key={index} className="courses">
-                            <article className="course">
-                                <h1>{item.curso}</h1>
-                                <h2>{item.instituicao}</h2>
-                                <h3>{item.duracao}</h3>
-                            </article>
+  const adm = !profileId || profileId === me?.id;
 
-                            {index < certificacoes.length - 1 && <hr />}
-                        </div>
-                    )
-                )}
+  return (
+    <section className="ctn-card">
+      <HeaderCard title="Meus cursos" btnPlus to="courses" adm={adm} />
 
-            </section>
-        </section>
-    );
+      <section className="ctn-my-courses">
+        {certificacoes.map((item, index) =>
+          item?.curso && (
+            <div key={index} className="courses">
+              <article className="course">
+                <h1>{item.curso}</h1>
+                <h2>{item.instituicao}</h2>
+                <h3>{item.duracao}</h3>
+              </article>
+
+              {index < certificacoes.length - 1 && <hr />}
+            </div>
+          )
+        )}
+      </section>
+    </section>
+  );
 };
 
 export default CardMyCourses;

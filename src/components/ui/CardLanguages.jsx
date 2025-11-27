@@ -1,60 +1,68 @@
 import { useEffect, useState } from "react";
 import HeaderCard from "./HeaderCard";
+import useProfile from "../../hook/useProfile";
+import { supabase } from "../../hook/supabaseClient";
 
-const CardLanguages = ({local}) => {
+const CardLanguages = ({ profileId }) => {
+  const { data: me } = useProfile(); // usuário logado
+  const [idiomas, setIdiomas] = useState([]);
 
-    const [idiomas, setIdiomas] = useState([]);
+  useEffect(() => {
+    if (!me) return;
 
-    useEffect(() => {
-        const user = localStorage.getItem(local);
-        if (!user) return;
+    const fetchLanguages = async () => {
+      try {
+        const id = profileId || me.id;
 
-        const usuarioLogado = JSON.parse(user);
+        // Buscar idiomas do perfil no Supabase
+        const { data: user, error } = await supabase
+          .from("profiles")
+          .select("id, idiomas")
+          .eq("id", id)
+          .single();
 
-        fetch("/db/users.json")
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    const userData = data.find(u => u.id === usuarioLogado.id);
+        if (error) {
+          console.error("Erro ao buscar idiomas:", error);
+          return;
+        }
 
-                    if (Array.isArray(userData?.idiomas)) {
-                        setIdiomas(userData.idiomas);
-                    }
-                }
-            })
-            .catch(err => console.error("Erro ao carregar JSON:", err));
-    });
-
-    const hasContent = (obj) => {
-        if (!obj) return false;
-
-        return Object.values(obj).some(value => {
-            if (typeof value === "string" && value.trim() !== "") return true;
-            if (typeof value === "number") return true;
-            return false;
-        });
+        if (Array.isArray(user.idiomas)) {
+          setIdiomas(user.idiomas);
+        } else {
+          setIdiomas([]);
+        }
+      } catch (err) {
+        console.error("Erro ao carregar idiomas:", err);
+      }
     };
 
-    return (
-        <section className="ctn-card">
-            <HeaderCard title='Idiomas' btnPlus to='languages' adm={local === "eloy_user"} />
-            <section className="ctn-languages">
-                {idiomas.map((item, index) =>
-                    hasContent(item) && (
-                        <div key={index} className="languages">
-                            <article className="language">
-                                <h1>{item.idioma}</h1>
-                                <h2>{item.nivel}</h2>
-                            </article>
+    fetchLanguages();
+  }, [me, profileId]);
 
-                            {index < idiomas.length - 1 && <hr />}
-                        </div>
-                    )
-                )}
-            </section>
+  if (!idiomas || idiomas.length === 0) return null; // Não mostra se não houver idiomas
 
-        </section>
-    );
+  const adm = !profileId || profileId === me?.id;
+
+  return (
+    <section className="ctn-card">
+      <HeaderCard title="Idiomas" btnPlus to="languages" adm={adm} />
+
+      <section className="ctn-languages">
+        {idiomas.map((item, index) =>
+          item?.idioma && (
+            <div key={index} className="languages">
+              <article className="language">
+                <h1>{item.idioma}</h1>
+                <h2>{item.nivel}</h2>
+              </article>
+
+              {index < idiomas.length - 1 && <hr />}
+            </div>
+          )
+        )}
+      </section>
+    </section>
+  );
 };
 
 export default CardLanguages;
