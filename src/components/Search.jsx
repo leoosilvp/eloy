@@ -1,9 +1,11 @@
-import '../css/search.css'
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import "../css/search.css";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../hook/supabaseClient";
+import useProfile from "../hook/useProfile";
 
 const Search = () => {
-
+  const { data: me } = useProfile(); // usuário logado
   const [users, setUsers] = useState([]);
   const [suggested, setSuggested] = useState([]);
   const [search, setSearch] = useState("");
@@ -13,16 +15,12 @@ const Search = () => {
   const navigate = useNavigate();
 
   const normalize = (text) =>
-    text
-      ?.normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase();
+    text?.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 
   const limitText = (text, max = 68) =>
     text && text.length > max ? text.slice(0, max) + "..." : text;
 
   const openProfile = (id) => {
-    localStorage.setItem("current_profile_id", id);
     navigate(`/user/${id}`);
     window.location.reload();
   };
@@ -40,75 +38,50 @@ const Search = () => {
   }, []);
 
   useEffect(() => {
-    const logged = localStorage.getItem("eloy_user");
-    if (!logged) return;
+    if (!me) return;
 
-    const loggedUser = JSON.parse(logged);
+    const fetchUsers = async () => {
+      try {
+        const { data: allUsers, error } = await supabase
+          .from("profiles")
+          .select("id, nome, foto, titulo, area, cargo, areainteresses");
 
-    fetch("/db/users.json")
-      .then(res => res.json())
-      .then(data => {
+        if (error) throw error;
 
-        if (!Array.isArray(data)) return;
+        // Excluir o usuário logado
+        const otherUsers = allUsers.filter(u => u.id !== me.id);
+        setUsers(otherUsers);
 
-        const all = data.filter(u => u.id !== loggedUser.id);
-        setUsers(all);
-
-        const ranked = all
+        // Ranking baseado em interesses e área
+        const ranked = otherUsers
           .map(u => {
             let score = 0;
 
             const normArea = u.area ? normalize(u.area) : null;
             const normCargo = u.cargo ? normalize(u.cargo) : null;
             const normTitle = u.titulo ? normalize(u.titulo) : null;
-            const userArea = loggedUser.area ? normalize(loggedUser.area) : null;
-            const userCargo = loggedUser.cargo ? normalize(loggedUser.cargo) : null;
+            const userArea = me.area ? normalize(me.area) : null;
+            const userCargo = me.cargo ? normalize(me.cargo) : null;
 
-            if (normArea && userArea && normArea === userArea) {
-              score += 12;
-            }
+            if (normArea && userArea && normArea === userArea) score += 12;
+            if (normCargo && userCargo && normCargo === userCargo) score += 10;
+            if (normTitle && userCargo && normTitle.includes(userCargo)) score += 6;
+            if (normTitle && userArea && normTitle.includes(userArea)) score += 6;
+            if (normArea && userArea && (normArea.includes(userArea) || userArea.includes(normArea))) score += 3;
+            if (normCargo && userCargo && (normCargo.includes(userCargo) || userCargo.includes(normCargo))) score += 3;
 
-            if (normCargo && userCargo && normCargo === userCargo) {
-              score += 10;
-            }
-
-            if (normTitle && userCargo && normTitle.includes(userCargo)) {
-              score += 6;
-            }
-            if (normTitle && userArea && normTitle.includes(userArea)) {
-              score += 6;
-            }
-
-            if (normArea && userArea && (
-              normArea.includes(userArea) ||
-              userArea.includes(normArea)
-            )) {
-              score += 3;
-            }
-
-            if (normCargo && userCargo && (
-              normCargo.includes(userCargo) ||
-              userCargo.includes(normCargo)
-            )) {
-              score += 3;
-            }
-
-            if (Array.isArray(u.areainteresses) && Array.isArray(loggedUser.areainteresses)) {
-              const matches = u.areainteresses.filter(itemU => {
-                const normI = normalize(itemU);
-                return loggedUser.areainteresses.some(itemL => {
-                  const normL = normalize(itemL);
-                  return (
-                    normI === normL ||                
-                    normI.includes(normL) ||          
-                    normL.includes(normI)             
-                  );
-                });
-              }).length;
-
+            if (Array.isArray(u.areainteresses) && Array.isArray(me.areainteresses)) {
+              const matches = u.areainteresses.filter(itemU =>
+                me.areainteresses.some(itemL =>
+                  normalize(itemU) === normalize(itemL) ||
+                  normalize(itemU).includes(normalize(itemL)) ||
+                  normalize(itemL).includes(normalize(itemU))
+                )
+              ).length;
               score += matches * 4;
             }
 
+            // Sinônimos fracos
             const weakSynonyms = [
               ["tecnologia", "ti", "desenvolvimento", "programacao", "dev"],
               ["marketing", "publicidade", "branding"],
@@ -119,10 +92,7 @@ const Search = () => {
             for (const group of weakSynonyms) {
               const hasUser = group.includes(userArea) || group.includes(userCargo);
               const hasOther = group.includes(normArea) || group.includes(normCargo);
-
-              if (hasUser && hasOther) {
-                score += 5;
-              }
+              if (hasUser && hasOther) score += 5;
             }
 
             return { ...u, score };
@@ -132,12 +102,16 @@ const Search = () => {
 
         setSuggested(ranked);
 
-      })
-      .catch(err => console.error("Erro ao carregar JSON:", err));
-  }, []);
+      } catch (err) {
+        console.error("Erro ao carregar usuários:", err);
+      }
+    };
+
+    fetchUsers();
+  }, [me]);
 
   useEffect(() => {
-    if (search.trim() === "") {
+    if (!me || search.trim() === "") {
       setFiltered([]);
       return;
     }
@@ -145,22 +119,19 @@ const Search = () => {
     const term = normalize(search);
 
     const result = users.filter(u =>
-      normalize(u.nome).includes(term)
-      || normalize(u.area).includes(term)
-      || (Array.isArray(u.areainteresses) &&
-        u.areainteresses.some(i => normalize(i).includes(term)))
+      normalize(u.nome).includes(term) ||
+      (u.area && normalize(u.area).includes(term)) ||
+      (Array.isArray(u.areainteresses) && u.areainteresses.some(i => normalize(i).includes(term)))
     );
 
     setFiltered(result);
-  }, [search, users]);
-
+  }, [search, users, me]);
 
   if (!open) return null;
 
   return (
     <article className="ctn-search">
       <section className="search">
-
         <article className='input-search'>
           <button><i className='fa-solid fa-search'></i></button>
           <input
@@ -175,7 +146,6 @@ const Search = () => {
         {search === "" && (
           <section className='users-search'>
             <h1>Com base nos seus interesses</h1>
-
             {suggested.map(user => (
               <article
                 className='user'
@@ -198,9 +168,7 @@ const Search = () => {
         {search !== "" && (
           <section className='users-search'>
             <h1>Resultados</h1>
-
             {filtered.length === 0 && <p><i className='fa-regular fa-face-frown'></i> Nenhum usuário encontrado.</p>}
-
             {filtered.map(user => (
               <article
                 className='user'
@@ -219,7 +187,6 @@ const Search = () => {
             ))}
           </section>
         )}
-
       </section>
     </article>
   );

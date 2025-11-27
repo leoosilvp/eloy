@@ -29,20 +29,13 @@ const Auth = () => {
             password: senha
         });
 
-        if (error) {
-            console.error(error);
-            return setErro(error.message || "Email ou senha incorretos.");
-        }
+        if (error) return setErro(error.message || "Email ou senha incorretos.");
 
         const token = data.session?.access_token;
-
-        if (token) {
-            localStorage.setItem("access_token", token);
-        }
+        if (token) localStorage.setItem("access_token", token);
 
         navigate("/feed");
     }
-
 
     async function handleCreateAccount() {
         setErro("");
@@ -51,41 +44,44 @@ const Auth = () => {
         }
 
         try {
+            // Cria usuário no Supabase Auth
             const { data: signData, error: signError } = await supabase.auth.signUp({
                 email,
                 password: senha,
-                options: {
-                    emailRedirectTo: undefined,
-                    data: { full_name: nome },
-                    shouldCreateUser: true
-                }
-
+                options: { data: { full_name: nome } }
             });
 
             if (signError) {
-                console.error(signError);
-                return setErro(signError.message || "Erro ao criar usuário.");
+                if (signError.message.includes("already registered")) {
+                    return setErro("Email já cadastrado. Tente entrar ou recupere sua senha.");
+                }
+                return setErro(signError.message);
             }
 
             const userId = signData.user?.id;
             if (!userId) return setErro("Erro: user id não retornado.");
 
-            const { error: dbError } = await supabase
-                .from("profiles")
-                .insert([{
-                    id: userId,
-                    user_name: userName,
-                    nome,
-                    genero,
-                    aniversario: nascimento,
-                    created_at: new Date().toISOString()
-                }]);
+            // Upsert no perfil (evita duplicate key)
+            const { error: dbError } = await supabase.from("profiles").upsert([{
+                id: userId,
+                user_name: userName,
+                nome,
+                genero,
+                aniversario: nascimento,
+                created_at: new Date().toISOString()
+            }], { onConflict: "id" });
 
-            if (dbError) {
-                console.error(dbError);
-                return setErro("Erro ao salvar dados do perfil: " + dbError.message);
-            }
+            if (dbError) return setErro("Erro ao salvar dados do perfil: " + dbError.message);
 
+            // Login automático
+            const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+                email,
+                password: senha
+            });
+
+            if (loginError) return setErro(loginError.message);
+
+            localStorage.setItem("access_token", loginData.session?.access_token);
             navigate("/feed");
 
         } catch (err) {
@@ -189,6 +185,7 @@ const Auth = () => {
                 </article>
             </section>
         </section>
+
     );
 };
 
