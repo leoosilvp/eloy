@@ -1,9 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 
 const SUPABASE_URL = "https://zwwxnssxjnujuhqjfkyc.supabase.co";
-const SERVICE_ROLE = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY;
 
-const supabase = createClient(SUPABASE_URL, SERVICE_ROLE);
+const supabase = createClient(SUPABASE_URL, ANON_KEY);
 
 export default async function handler(req, res) {
   const { username } = req.query;
@@ -18,11 +18,10 @@ export default async function handler(req, res) {
     return res.status(404).send("<h1>Perfil não encontrado</h1>");
   }
 
-  const NAME = user.nome;
-  const TITLE = user.titulo || "";
-  const IMAGE = user.foto || "https://via.placeholder.com/600x400?text=Eloy";
+  const NAME = user.nome || "Sem Nome";
+  const TITLE = user.titulo || "Sem Título";
+  const IMAGE = user.foto || "https://img.freepik.com/vetores-premium/icone-de-perfil-de-avatar-padrao-imagem-de-usuario-de-midia-social-icone-de-avatar-cinza-silhueta-de-profil.jpg";
 
-  // URL FINAL do perfil
   const FINAL_URL = `https://${req.headers.host}/user/${user.user_name}`;
 
   const html = `
@@ -48,8 +47,15 @@ export default async function handler(req, res) {
   <meta name="twitter:description" content="Conheça o perfil de ${NAME} no Eloy" />
   <meta name="twitter:image" content="${IMAGE}" />
 
-  <!-- REDIRECIONAMENTO -->
-  <meta http-equiv="refresh" content="0; url=${FINAL_URL}" />
+  <script>
+    // Redireciona SOMENTE humanos
+    if (!navigator.userAgent.includes("bot") &&
+        !navigator.userAgent.includes("facebookexternalhit") &&
+        !navigator.userAgent.includes("WhatsApp") &&
+        !navigator.userAgent.includes("Twitterbot")) {
+      window.location.href = "${FINAL_URL}";
+    }
+  </script>
 </head>
 
 <body>
