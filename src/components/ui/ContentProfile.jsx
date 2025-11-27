@@ -210,36 +210,20 @@ const ContentProfile = () => {
             >
               Minhas estatísticas
             </button>
-            {/* Botão de compartilhar perfil */}
             <button
               onClick={() => {
-                if (!profile || !profile.user_name) {
-                  alert("Erro: perfil inválido.");
-                  return;
-                }
-
                 const link = `${window.location.origin}/api/share/${profile.user_name}`;
-                const title = `${profile.nome} no Eloy`;
-                const text = `Confira o perfil de ${profile.nome} no Eloy!`;
 
-                // Web Share API disponível
                 if (navigator.share) {
-                  navigator.share({ title, text, url: link })
-                    .catch(() => {
-                      // Caso o usuário feche o modal
-                      console.log("Compartilhamento cancelado");
-                    });
-                  return;
-                }
-
-                // Fallback: copiar link
-                navigator.clipboard.writeText(link)
-                  .then(() => {
-                    alert("Link copiado para sua área de transferência!");
-                  })
-                  .catch(() => {
-                    alert("Não foi possível copiar o link.");
+                  navigator.share({
+                    title: `${profile.nome} no Eloy`,
+                    text: `Confira o perfil de ${profile.nome} no Eloy!`,
+                    url: link,
                   });
+                } else {
+                  navigator.clipboard.writeText(link);
+                  alert("Link copiado!");
+                }
               }}
             >
               Compartilhar perfil
