@@ -1,52 +1,37 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useProfile from "../../hook/useProfile";
 
-const CardProfile = () => {
-  const { id } = useParams();
+const CardProfile = ({ profile: propProfile }) => {
   const { data: profile, isLoading } = useProfile();
 
-  // Evita erro enquanto carrega
-  if (isLoading || !profile) return null;
+  const user = propProfile || profile;
 
-  const redirectLink =
-    !id || profile.id === id
-      ? "/profile"
-      : `/user/${id}`;
+  if (isLoading || !user) return null;
 
-  // Função segura para truncar título
+  const redirectLink = "/profile";
+
   const tituloLimite = (text = "") =>
     text.length > 62 ? text.slice(0, 62) + "..." : text;
 
-  // Banner padrão se não houver
-  const bannerSrc =
-    profile.banner?.trim()
-      ? profile.banner
-      : "/assets/img/img-banner-default.png";
+  const bannerSrc = user.banner?.trim()
+    ? user.banner
+    : "/assets/img/img-banner-default.png";
 
-  // Foto padrão se não houver
-  const fotoSrc =
-    profile.foto?.trim()
-      ? profile.foto
-      : "/assets/img/img-profile-default.png";
+  const fotoSrc = user.foto?.trim()
+    ? user.foto
+    : "/assets/img/img-profile-default.png";
 
   return (
     <Link to={redirectLink} className="card-profile">
       <section className="banner-card-profile">
-        <img
-          src={bannerSrc}
-          alt="Banner do usuário"
-        />
+        <img src={bannerSrc} alt="Banner do usuário" />
       </section>
 
       <section className="user-card-profile">
-        <img
-          src={fotoSrc}
-          alt="Foto do usuário"
-        />
-
-        <h1 className="name-card-profile">{profile.nome}</h1>
-        <h2 className="title-card-profile">{tituloLimite(profile.titulo || "")}</h2>
-        <h3 className="job-card-profile">{profile.cargo}</h3>
+        <img src={fotoSrc} alt="Foto do usuário" />
+        <h1 className="name-card-profile">{user.nome}</h1>
+        <h2 className="title-card-profile">{tituloLimite(user.titulo || "")}</h2>
+        <h3 className="job-card-profile">{user.cargo}</h3>
       </section>
     </Link>
   );

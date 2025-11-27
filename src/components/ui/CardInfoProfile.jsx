@@ -2,23 +2,27 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../../hook/supabaseClient";
 
-const CardInfoProfile = ({ local }) => {
+const CardInfoProfile = ({ profile: propProfile }) => {
   const [seguidores, setSeguidores] = useState(0);
   const [seguindo, setSeguindo] = useState(0);
   const [estrelas, setEstrelas] = useState(0);
 
   useEffect(() => {
     const loadData = async () => {
-      // Obter sessão atual
-      const { data: sessionData } = await supabase.auth.getSession();
-      const user = sessionData.session?.user;
-      if (!user) return;
+      let userId = propProfile?.id;
 
-      // Buscar perfil do usuário logado
+      // Se não houver prop, pega do usuário logado
+      if (!userId) {
+        const { data: sessionData } = await supabase.auth.getSession();
+        const user = sessionData.session?.user;
+        if (!user) return;
+        userId = user.id;
+      }
+
       const { data: profileData, error } = await supabase
         .from("profiles")
         .select("seguidores, seguindo, estrelas")
-        .eq("id", user.id)
+        .eq("id", userId)
         .single();
 
       if (error || !profileData) {
@@ -32,7 +36,7 @@ const CardInfoProfile = ({ local }) => {
     };
 
     loadData();
-  }, [local]);
+  }, [propProfile]);
 
   return (
     <article className="card-info-profile">
