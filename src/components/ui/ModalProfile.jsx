@@ -1,37 +1,20 @@
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import useProfile from "../../hook/useProfile";
 
 const ModalProfile = ({ open, setOpen }) => {
-    const [userData, setUserData] = useState(null);
+    const { data: userData, isLoading } = useProfile();
 
-    useEffect(() => {
-        const user = localStorage.getItem("eloy_user");
-        if (!user) return;
-
-        const usuarioLogado = JSON.parse(user);
-
-        fetch("/db/users.json")
-            .then(res => res.json())
-            .then(data => {
-                if (Array.isArray(data)) {
-                    const foundUser = data.find(u => u.id === usuarioLogado.id);
-                    if (foundUser) setUserData(foundUser);
-                }
-            })
-            .catch(err => console.error("Erro ao carregar JSON:", err));
-    }, []);
-
-    if (!open || !userData) return null;
+    if (!open || isLoading || !userData) return null;
 
     const fotoSrc =
         userData.foto && userData.foto.trim() !== ""
             ? userData.foto
-            : "assets/img/img-profile-default.png";
+            : "/assets/img/img-profile-default.png";
 
     const bannerSrc =
         userData.banner && userData.banner.trim() !== ""
             ? userData.banner
-            : "assets/img/img-banner-default.png";
+            : "/assets/img/img-banner-default.png";
 
     const tituloLimitado = userData.titulo
         ? userData.titulo.length > 60
@@ -66,9 +49,11 @@ const ModalProfile = ({ open, setOpen }) => {
                 <NavLink to="/profile">Meu perfil</NavLink>
                 <NavLink to="https://eloydashboard.vercel.app/" target="_blank">Minhas estatísticas</NavLink>
                 <NavLink to="/settings/appearance">Configurações</NavLink>
-                <NavLink className="log-out" to="/welcome"><i className="fa-solid fa-arrow-right-from-bracket"></i>Sair</NavLink>
+                <NavLink className="log-out" to="/welcome">
+                    <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                    Sair
+                </NavLink>
             </section>
-
         </article>
     );
 };
