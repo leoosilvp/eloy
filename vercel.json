@@ -1,16 +1,5 @@
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
-  ],
-  "routes": [
-    {
-      "src": "/user/(.*)",
-      "dest": "/api/og/$1",
-      "headers": {
-        "x-prerender-revalidate": "86400"
-      },
-      "methods": ["GET"],
-      "continue": true
-    }
   ]
 }

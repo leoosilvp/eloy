@@ -212,17 +212,21 @@ const ContentProfile = () => {
             </button>
             <button
               onClick={() => {
-                const link = `${window.location.origin}/api/share/${profile.user_name}`;
-                navigator.share
-                  ? navigator.share({
-                    title: `${profile.nome}`,
-                    text: "Veja meu perfil completo no Eloy.",
-                    url: link
-                  })
-                  : window.open(link, "_blank");
+                const link = `${window.location.origin}/user/${profile.user_name}`;
+                if (navigator.share) {
+                  navigator.share({
+                    title: `${profile.nome} no Eloy`,
+                    text: `Confira o perfil de ${profile.nome} no Eloy!`,
+                    url: link,
+                  }).catch((err) => console.error("Erro ao compartilhar:", err));
+                } else {
+                  navigator.clipboard.writeText(link)
+                    .then(() => alert("Link copiado para a área de transferência!"))
+                    .catch(() => alert("Erro ao copiar o link."));
+                }
               }}
             >
-              Compartilhar
+              Compartilhar perfil
             </button>
           </>
         ) : (
