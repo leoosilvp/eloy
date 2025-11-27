@@ -1,17 +1,18 @@
 // /api/share/og-image/[username].js
+
 import { ImageResponse } from "@vercel/og";
 import { createClient } from "@supabase/supabase-js";
 
 export const config = {
-  runtime: "edge",
+  runtime: "nodejs18.x",  // <<< OBRIGATÓRIO PARA SUPORTAR SUPABASE E OG
 };
 
-export default async function handler(req) {
-  const username = req.nextUrl.pathname.split("/").pop();
+export default async function handler(req, res) {
+  const { username } = req.query;
 
   const supabase = createClient(
-    "https://zwwxnssxjnujuhqjfkyc.supabase.co",
-        process.env.SUPABASE_SERVICE_ROLE_KEY
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
   const { data: profile } = await supabase
@@ -20,21 +21,25 @@ export default async function handler(req) {
     .eq("user_name", username)
     .single();
 
-  return new ImageResponse(
+  if (!profile) {
+    res.status(404).send("Perfil não encontrado.");
+    return;
+  }
+
+  const image = new ImageResponse(
     (
       <div
         style={{
           width: "1200px",
           height: "630px",
+          background: "#ffffff",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "center",
           alignItems: "center",
-          background: "#f5f5f5",
+          justifyContent: "center",
           fontFamily: "sans-serif",
         }}
       >
-        {/* FOTO */}
         <img
           src={profile.foto}
           style={{
@@ -42,41 +47,36 @@ export default async function handler(req) {
             height: "180px",
             borderRadius: "50%",
             objectFit: "cover",
-            border: "8px solid white",
-            boxShadow: "0 4px 25px rgba(0,0,0,0.15)",
+            border: "8px solid #fff",
+            boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
           }}
         />
 
-        {/* NOME */}
         <h1
           style={{
-            fontSize: "50px",
+            fontSize: 50,
+            marginTop: 30,
+            color: "#111",
             fontWeight: "bold",
-            marginTop: "25px",
-            color: "#222",
           }}
         >
           {profile.nome}
         </h1>
 
-        {/* HEADLINE */}
         <p
           style={{
-            marginTop: "10px",
-            fontSize: "32px",
+            fontSize: 32,
             color: "#444",
-            maxWidth: "800px",
-            textAlign: "center",
+            marginTop: 10,
           }}
         >
           {profile.titulo}
         </p>
 
-        {/* USERNAME */}
         <p
           style={{
-            marginTop: "20px",
-            fontSize: "28px",
+            marginTop: 20,
+            fontSize: 28,
             color: "#666",
           }}
         >
@@ -84,6 +84,13 @@ export default async function handler(req) {
         </p>
       </div>
     ),
-    { width: 1200, height: 630 }
+    {
+      width: 1200,
+      height: 630,
+    }
   );
+
+  // **IMPORTANTE**: não usar Buffer no runtime Edge/Node moderno
+  res.setHeader("Content-Type", "image/png");
+  res.status(200).send(Buffer.from(await image.arrayBuffer()));
 }
