@@ -1,42 +1,68 @@
-export default function calculateUserRanking(usuarios) {
+import { supabase } from "../hook/supabaseClient";
 
-    const pesos = {
-        seguidores: 4,
-        estrelas: 3,
-        likes: 2,
-        comentarios: 1,
-        compartilhamentos: 2
-    };
+export default async function calculateUserRanking(loggedUserId) {
+    // 🔥 Buscar perfis
+    const { data: users } = await supabase
+        .from("profiles")
+        .select("id, nome, foto, titulo, seguidores, estrelas");
 
-    const ranking = usuarios.map(user => {
+    if (!users) return [];
 
-        const totalSeguidores = user.seguidores?.length || 0;
-        const totalEstrelas = user.estrelas?.length || 0;
+    // 🔥 Buscar posts
+    const { data: posts } = await supabase
+        .from("posts")
+        .select("id, author_id, created_at, likes, comentarios, compartilhamentos");
 
-        const totalLikes = user.posts?.reduce((sum, p) => sum + (p.likes?.length || 0), 0);
-        const totalComentarios = user.posts?.reduce((sum, p) => sum + (p.comentarios?.length || 0), 0);
-        const totalCompartilhamentos = user.posts?.reduce((sum, p) => sum + (p.compartilhamentos?.length || 0), 0);
+    // 🔥 Calcular ranking
+    const ranking = users.map(user => {
+        const seguidores = Array.isArray(user.seguidores) ? user.seguidores.length : 0;
+        const estrelas = user.estrelas || 0;
+
+        const userPosts = posts?.filter(p => p.author_id === user.id) || [];
+        const totalLikes = userPosts.reduce((s, p) => s + (p.likes || 0), 0);
+        const totalComentarios = userPosts.reduce(
+            (s, p) => s + (Array.isArray(p.comentarios) ? p.comentarios.length : 0),
+            0
+        );
+        const totalCompartilhamentos = userPosts.reduce(
+            (s, p) => s + (p.compartilhamentos || 0),
+            0
+        );
+
+        const now = new Date();
+        const atividadeRecente = userPosts.reduce((sum, p) => {
+            const days = (now - new Date(p.created_at)) / (1000 * 60 * 60 * 24);
+            return sum + Math.max(0, 1 - days / 30);
+        }, 0);
 
         const score =
-            totalSeguidores * pesos.seguidores +
-            totalEstrelas * pesos.estrelas +
-            totalLikes * pesos.likes +
-            totalComentarios * pesos.comentarios +
-            totalCompartilhamentos * pesos.compartilhamentos;
+            seguidores * 4 +
+            estrelas * 3 +
+            totalLikes * 2 +
+            totalComentarios * 1 +
+            totalCompartilhamentos * 2 +
+            atividadeRecente * 5;
 
         return {
-            id: user.id,
-            nome: user.nome,
-            foto: user.foto,
-            titulo: user.titulo,
-            score,
+            ...user,
+            seguidores,
+            estrelas,
+            totalLikes,
+            totalComentarios,
+            totalCompartilhamentos,
+            atividadeRecente,
+            score
         };
     });
 
+    // 🔥 Ordena pelo score
     ranking.sort((a, b) => b.score - a.score);
 
-    ranking.forEach((user, index) => {
-        user.posicao = index + 1;
+    ranking.forEach((u, i) => {
+        u.posicao = i + 1;
+        if (u.id === loggedUserId) {
+            localStorage.setItem("myRankingPos", String(u.posicao));
+        }
     });
 
     return ranking;

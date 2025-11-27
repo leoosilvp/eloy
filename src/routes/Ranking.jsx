@@ -7,10 +7,10 @@ import CardNewslatter from "../components/ui/CardNewslatter";
 import CardProfile from "../components/ui/CardProfile";
 
 import calculateUserRanking from "../hook/calculateUserRanking";
+import useProfile from "../hook/useProfile";
 
 const Ranking = () => {
-
-    const [me, setMe] = useState(null);
+    const { data: me } = useProfile();
     const [top10, setTop10] = useState([]);
 
     const limitarTitulo = (titulo) => {
@@ -19,27 +19,32 @@ const Ranking = () => {
     };
 
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem("eloy_user"));
-        if (!storedUser) return;
+        if (!me) return;
 
-        fetch("/db/users.json")
-            .then(res => res.json())
-            .then(listaUsuarios => {
+        async function loadRanking() {
+            const ranking = await calculateUserRanking();
 
-                const ranking = calculateUserRanking(listaUsuarios);
+            if (!ranking) return;
 
-                const eu = ranking.find(u => u.id === storedUser.id);
-                setMe(eu || null);
+            const minhaPosicao = ranking.find((u) => u.id === me.id);
 
-                setTop10(ranking.slice(0, 10));
-            });
-    }, []);
+            if (minhaPosicao) {
+                Object.assign(me, minhaPosicao);
+            }
+
+            setTop10(ranking.slice(0, 10));
+        }
+
+        loadRanking();
+    }, [me]);
+
+    if (!me) return null;
 
     return (
         <section className="content">
             <aside className="left">
-                <CardProfile local='eloy_user' />
-                <CardInfoProfile local='eloy_user' />
+                <CardProfile />
+                <CardInfoProfile />
             </aside>
 
             <section className="ranking">
@@ -48,8 +53,8 @@ const Ranking = () => {
                 </div>
 
                 <section className="my-position">
-                    {me && (
-                        <NavLink to='/profile' className="card-position me">
+                    {me.posicao && (
+                        <NavLink to="/profile" className="card-position me">
                             <div className="position">
                                 <p>{me.posicao}º</p>
 
@@ -73,7 +78,11 @@ const Ranking = () => {
 
                 <section className="positions">
                     {top10.map((user) => (
-                        <NavLink key={user.id} to={`/user/${user.id}`} className="card-position">
+                        <NavLink
+                            key={user.id}
+                            to={`/user/${user.id}`}
+                            className="card-position"
+                        >
                             <div className="position">
                                 <p>{user.posicao}º</p>
 

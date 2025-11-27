@@ -1,33 +1,29 @@
 import { useEffect, useState } from "react";
+import useProfile from "../../hook/useProfile";
 import calculateUserRanking from "../../hook/calculateUserRanking";
 import { NavLink } from "react-router-dom";
 
 export default function Reputation() {
+    const { data: me } = useProfile();
     const [posicao, setPosicao] = useState(null);
 
     useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("eloy_user"));
-        if (!user) return;
+        if (!me) return;
 
-        fetch("/db/users.json")
-            .then(res => res.json())
-            .then(listaUsuarios => {
-                const ranking = calculateUserRanking(listaUsuarios);
+        async function loadRanking() {
+            const ranking = await calculateUserRanking(me.id);
+            setPosicao(localStorage.getItem("myRankingPos"));
+        }
 
-                const index = ranking.findIndex(u => u.id === user.id);
-
-                if (index === -1) {
-                    setPosicao(">10");
-                } else {
-                    setPosicao(index + 1);
-                }
-            });
-    }, []);
+        loadRanking();
+    }, [me]);
 
     return (
-        <NavLink to='/ranking' className="repute">
+        <NavLink to="/ranking" className="repute">
             <p>Você está em</p>
-            <p className="position">{posicao ? `${posicao}º` : "..."}</p>
+            <p className="position">
+                {posicao ? `${posicao}º` : "..."}
+            </p>
             <p>lugar!</p>
         </NavLink>
     );
