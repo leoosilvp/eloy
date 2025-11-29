@@ -177,7 +177,7 @@ const CardFeedProfile = () => {
       </section>
 
       <NavLink
-        to={adm ? `/profile/feed-profile` : `/user/${userData.user_name}/feed-profile`}
+        to={adm ? `/profile/feed profile` : `/user/${userData.user_name}/feed profile`}
         className="btn-to-feed-profile"
       >
         {adm ? "Acessar minhas publicações" : "Visualizar publicações"}

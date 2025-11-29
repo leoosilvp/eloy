@@ -1,18 +1,16 @@
-import { useNavigate } from "react-router-dom"
-
-const HeaderSettings = () => {
-
-  const navigate = useNavigate();
+const HeaderSettings = ({ saveHandler, cancelHandler }) => {
 
   return (
     <section className="header-settings">
-        <h1>Configurações</h1>
-        <section className="btns-header-settings">
-            <button onClick={() => navigate(-1)}>Cancelar</button>
-            <button className="active">Salvar</button>
-        </section>
+      <h1>Configurações</h1>
+      <section className="btns-header-settings">
+        <button onClick={cancelHandler}>Cancelar</button>
+        <button className="active" onClick={saveHandler}>
+          Salvar
+        </button>
+      </section>
     </section>
-  )
-}
+  );
+};
 
-export default HeaderSettings
+export default HeaderSettings;

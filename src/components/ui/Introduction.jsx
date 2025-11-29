@@ -1,97 +1,123 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 import HeaderContentSettings from "./HeaderContentSettings";
+import { supabase } from "../../hook/supabaseClient";
 
 const Introduction = () => {
-  const [userData, setUserData] = useState(null);
+  const {
+    photo, setPhoto,
+    name, setName,
+    title, setTitle,
+    state: uf, setState: setUf,
+    country, setCountry,
+    birthday, setBirthday,
+    setProfileId
+  } = useOutletContext();
 
   useEffect(() => {
-    const user = localStorage.getItem("eloy_user");
-    if (!user) return;
+    const loadProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
 
-    const usuarioLogado = JSON.parse(user);
+      setProfileId(user.id);
 
-    fetch("/db/users.json")
-      .then(res => res.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          const info = data.find(u => u.id === usuarioLogado.id);
-          if (info) setUserData(info);
-        }
-      })
-      .catch(err => console.error("Erro ao carregar JSON:", err));
-  }, []);
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("foto, nome, titulo, estado, pais, aniversario")
+        .eq("id", user.id)
+        .single();
 
-  if (!userData) return null;
+      if (profile) {
+        setPhoto(profile.foto || "");
+        setName(profile.nome || "");
+        setTitle(profile.titulo || "");
+        setUf(profile.estado || "");
+        setCountry(profile.pais || "");
+        setBirthday(profile.aniversario || "");
+      }
+    };
 
-  const fotoSrc =
-    userData.foto && userData.foto.trim() !== ""
-      ? userData.foto
-      : "/assets/img/img-profile-default.png";
+    loadProfile();
+  }, [
+    setPhoto, setName, setTitle,
+    setUf, setCountry, setBirthday,
+    setProfileId
+  ]);
 
   return (
     <section className="ctn-introduction">
       <HeaderContentSettings title="introdução" />
 
       <section className="content-change">
+
+        {/* FOTO COM BOTÃO, MAS SEM UPLOAD */}
         <section className="change-img-profile">
-          <img src={fotoSrc} alt="Foto do usuário" />
+          <img
+            src={photo || "/assets/img/img-profile-default.png"}
+            alt="Foto do usuário"
+          />
 
           <div>
-            <button>Trocar foto</button>
-            <p>
-              Arraste ou selecione uma imagem para definir sua foto de perfil.
-              Para garantir a melhor qualidade visual, utilize uma imagem quadrada com resolução recomendada de 250×250 pixels.
-              O tamanho máximo permitido para upload é de 20 MB e formatos comuns, como JPG e PNG, são aceitos.
-            </p>
+            <button>
+              Trocar foto
+            </button>
+
+            <p>Função de troca de foto será adicionada futuramente.</p>
           </div>
         </section>
 
         <section className="ctn-change-settings">
 
+          {/* NOME */}
           <article className="change-name">
             <label>Nome:</label>
             <input
               type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               maxLength={50}
-              value={userData.nome}
-              readOnly
             />
           </article>
 
+          {/* TÍTULO */}
           <article className="change-title">
             <label>Título:</label>
             <input
               type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               maxLength={103}
-              value={userData.titulo}
-              readOnly
             />
           </article>
 
+          {/* ESTADO */}
           <article className="change-state">
             <label>Estado:</label>
             <input
               type="text"
-              value={userData.estado}
-              readOnly
+              value={uf}
+              onChange={(e) => setUf(e.target.value)}
+              maxLength={2}
             />
           </article>
 
+          {/* PAÍS */}
           <article className="change-country">
             <label>País:</label>
             <input
               type="text"
-              value={userData.pais}
-              readOnly
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
             />
           </article>
 
+          {/* ANIVERSÁRIO */}
           <article className="change-birthday">
             <label>Aniversário:</label>
             <input
               type="date"
-              value={userData.aniversario}
-              readOnly
+              value={birthday}
+              onChange={(e) => setBirthday(e.target.value)}
             />
           </article>
 

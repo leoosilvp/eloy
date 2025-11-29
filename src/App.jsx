@@ -52,8 +52,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/developers" element={<Devs />} />
           <Route path="/user/:username" element={<User />} />
-          <Route path="/user/:username/feed-profile" element={<FeedProfile />} />
-          <Route path="/profile/feed-profile" element={<FeedProfile />} />
+          <Route path="/user/:username/feed profile" element={<FeedProfile />} />
+          <Route path="/profile/feed profile" element={<FeedProfile />} />
           <Route path="/ranking" element={<Ranking />} />
 
           <Route path="/settings" element={<Settings />} >

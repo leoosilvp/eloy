@@ -1,79 +1,131 @@
-import { useEffect, useState } from "react";
-import HeaderContentSettings from "./HeaderContentSettings";
+import { useEffect, useState } from "react"
+import { useOutletContext } from "react-router-dom"
+import HeaderContentSettings from "./HeaderContentSettings"
+import { supabase } from "../../hook/supabaseClient"
 
-const Academic = ({local}) => {
+const Academic = () => {
+  const { academics, setAcademics } = useOutletContext()
+  const [newAcademic, setNewAcademic] = useState({
+    instituicao: "",
+    curso: "",
+    ano: ""
+  })
 
-    const [academics, setAcademics] = useState([]);
+  // Carregar dados do Supabase
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const { data: { user }, error: userError } = await supabase.auth.getUser()
+        if (userError) return console.error("Erro ao pegar usuário:", userError)
+        if (!user) return
 
-    useEffect(() => {
-        const storageUser = localStorage.getItem(local);
-        if (!storageUser) return;
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("formacao")
+          .eq("id", user.id)
+          .single()
 
-        const userLogged = JSON.parse(storageUser);
+        if (profileError) return console.error("Erro ao carregar perfil:", profileError)
 
-        fetch("/db/users.json")
-            .then(res => res.json())
-            .then(data => {
-                const user = data.find(u => u.id === userLogged.id);
-                if (user && user.formacao) {
-                    setAcademics(user.formacao);
-                }
-            });
-    });
+        setAcademics(profile?.formacao || [])
+      } catch (err) {
+        console.error("Erro ao buscar perfil:", err)
+      }
+    }
 
-    const validAcademics = academics.filter(ac =>
-        Object.values(ac).some(v => v && v.toString().trim() !== "")
-    );
+    fetchProfile()
+  }, [setAcademics])
 
-    return (
-        <section className="ctn-change-academic">
-            <HeaderContentSettings title='Formação' />
+  // Adicionar nova formação
+  const addAcademic = () => {
+    if (
+      !newAcademic.instituicao.trim() &&
+      !newAcademic.curso.trim() &&
+      !newAcademic.ano.trim()
+    ) return
 
-            <section className="content-change">
+    setAcademics(prev => [...prev, newAcademic])
+    setNewAcademic({ instituicao: "", curso: "", ano: "" })
+  }
 
-                <h1>Adicionar formação</h1>
+  const removeAcademic = index => {
+    setAcademics(prev => prev.filter((_, i) => i !== index))
+  }
 
-                <p>Adicione aqui suas formações acadêmicas, cursos e certificações que contribuíram para o seu desenvolvimento profissional e pessoal.</p>
+  const validAcademics = academics.filter(ac =>
+    Object.values(ac).some(value => value && value.toString().trim() !== "")
+  )
 
-                <article className="ctn-add-experiences">
-                    <div>
-                        <label>Instituição</label>
-                        <input type="text" />
-                    </div>
+  return (
+    <section className="ctn-change-academic">
+      <HeaderContentSettings title="Formação" />
 
-                    <div>
-                        <label>Curso</label>
-                        <input type="text" />
-                    </div>
+      <section className="content-change">
+        <h1>Adicionar formação</h1>
+        <p>
+          Adicione aqui suas formações acadêmicas, cursos e certificações que contribuíram 
+          para o seu desenvolvimento profissional e pessoal.
+        </p>
 
-                    <div>
-                        <label>Ano</label>
-                        <input type="month" />
-                    </div>
-                </article>
+        <article className="ctn-add-experiences">
+          <div>
+            <label>Instituição</label>
+            <input
+              type="text"
+              value={newAcademic.instituicao}
+              onChange={e =>
+                setNewAcademic(prev => ({ ...prev, instituicao: e.target.value }))
+              }
+            />
+          </div>
 
-                <hr />
+          <div>
+            <label>Curso</label>
+            <input
+              type="text"
+              value={newAcademic.curso}
+              onChange={e =>
+                setNewAcademic(prev => ({ ...prev, curso: e.target.value }))
+              }
+            />
+          </div>
 
-                <section className="ctn-my-academics">
+          <div>
+            <label>Ano</label>
+            <input
+              type="month"
+              value={newAcademic.ano}
+              onChange={e =>
+                setNewAcademic(prev => ({ ...prev, ano: e.target.value }))
+              }
+            />
+          </div>
 
-                    {validAcademics.length === 0 ? (
-                        <p>Nenhuma formação adicionada ainda.</p>
-                    ) : (
-                        validAcademics.map((item, index) => (
-                            <article className="academic" key={index}>
-                                <h1>{item.instituicao}</h1>
-                                <h2>{item.curso}</h2>
-                                <h3>{item.ano}</h3>
+          <button onClick={addAcademic}>Adicionar</button>
+        </article>
 
-                                {validAcademics.length > 1 && index < validAcademics.length - 1 && <hr />}
-                            </article>
-                        ))
-                    )}
+        <hr />
 
-                </section>
-            </section>
+        <section className="ctn-my-academics">
+          {validAcademics.length === 0 ? (
+            <p>Nenhuma formação adicionada ainda.</p>
+          ) : (
+            validAcademics.map((item, index) => (
+              <article className="academic" key={index}>
+                <h1>{item.instituicao}</h1>
+                <h2>{item.curso}</h2>
+                <h3>{item.ano}</h3>
+
+                <button onClick={() => removeAcademic(index)}>Remover</button>
+
+                {validAcademics.length > 1 && index < validAcademics.length - 1 && <hr />}
+              </article>
+            ))
+          )}
         </section>
-    );
+      </section>
+    </section>
+  )
 }
 
-export default Academic;
+export default Academic
